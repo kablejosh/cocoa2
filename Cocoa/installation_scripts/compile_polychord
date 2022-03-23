@@ -35,8 +35,8 @@ if [ -z "${IGNORE_POLYCHORD_COMPILATION}" ]; then
     rm -rf ./lib/*.a
     rm -rf ./lib/*.so
 
-    make all MPI=1 COMPILER_TYPE=gnu
-    make -j $MAKE_NUM_THREADS pypolychord MPI=1
+    make all 
+    make -j $MAKE_NUM_THREADS pypolychord
 
     CC=$MPI_CC_COMPILER CXX=$MPI_CXX_COMPILER $PYTHON3 setup.py install --prefix $ROOTDIR/.local
     if [ $? -ne 0 ] 

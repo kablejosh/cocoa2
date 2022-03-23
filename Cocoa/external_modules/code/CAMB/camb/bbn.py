@@ -1,5 +1,5 @@
 # Classes to produce BBN predictions for helium mass fraction and D/H given other parameters
-# Fitting formula for Parthenelope via Julien Lesourges Dec 2014
+# Fitting formula for Parthenelope via Julien Lesgourgues Dec 2014
 # General interpolation tables, with defaults from Parthenope May 2017 (thanks Ofelia Pesanti)
 # Use PRIMAT_Yp_DH_Error.dat table for latest from the PRIMAT code (arXiv: 1801.08023, thanks Cyril Pitrou)
 
@@ -74,8 +74,8 @@ class BBN_table_interpolator(BBNPredictor):
     BBN predictor based on interpolation from a numerical table calculated by a BBN code.
 
     Tables are supplied for `Parthenope <http://parthenope.na.infn.it/>`_ 2017 (PArthENoPE_880.2_standard.dat, default),
-    similar but with Marucci rates (PArthENoPE_880.2_marcucci.dat), and
-    `PRIMAT <http://www2.iap.fr/users/pitrou/primat.htm>`_ (PRIMAT_Yp_DH_Error.dat).
+    similar but with Marucci rates (PArthENoPE_880.2_marcucci.dat),
+    `PRIMAT <http://www2.iap.fr/users/pitrou/primat.htm>`_ (PRIMAT_Yp_DH_Error.dat, PRIMAT_Yp_DH_ErrorMC_2021.dat).
 
     :param interpolation_table: filename of interpolation table to use.
     :param function_of: two variables that determine the interpolation grid (x,y) in the table,
@@ -230,3 +230,4 @@ if __name__ == "__main__":
     print(BBN_fitting_parthenope().DH(0.02463, -0.6))
     print(BBN_table_interpolator('PArthENoPE_880.2_marcucci.dat').DH(0.02463, -0.6))
     print(BBN_table_interpolator('PRIMAT_Yp_DH_Error.dat').DH(0.02463, -0.6))
+    print(BBN_table_interpolator('PRIMAT_Yp_DH_ErrorMC_2021.dat').DH(0.02463, -0.6))
