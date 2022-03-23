@@ -19,6 +19,9 @@ export MINICONDA_INSTALLATION=1
 #export AMYPOND_SUPERCOMPUTER_INSTALLATION=1
 #export PUMA_SUPERCOMPUTER_INSTALLATION=1
 
+#IF TRUE USES CLIK FROM https://github.com/benabed/clik
+export USE_SPT_CLIK_PLANCK=1
+
 # ----------------------------------------------------------------------------
 # ----------------------------------------------------------------------------
 # -------------------------------  OPTIONAL OPTIONS --------------------------
@@ -39,6 +42,7 @@ export MAKE_NUM_THREADS=12
 #export IGNORE_COSMOLIKE_COMPILATION=1
 #export IGNORE_POLYCHORD_COMPILATION=1
 #export IGNORE_PLANCK_COMPILATION=1
+#export IGNORE_ACT_COMPILATION=1
 
 # ----------------------------------------------------------------------------
 # IF DEFINED, COSMOLIKE WILL BE COMPILED WITH DEBUG FLAG

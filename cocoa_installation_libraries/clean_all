@@ -22,7 +22,7 @@ rm -rf ./lapack-build
 
 rm -rf ./OpenBLAS
 
-rm -rf  ./pip_cache
+rm -rf ./pip_cache
 
 rm -rf ./spdlog
 

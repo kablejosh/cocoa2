@@ -59,7 +59,8 @@ The more straightforward way to install most prerequisites is via [Conda](https:
       'conda-forge::pandas=1.3.4' \
       'conda-forge::mpi4py=3.1.2' \
       'conda-forge::matplotlib=3.5.0' \
-      'conda-forge::astropy=4.3.1' 
+      'conda-forge::astropy=4.3.1' \
+      'conda-forge::tbb-devel=2021.5.0'
  
 With this installation method, users must activate the Conda environment whenever working with Cocoa, as shown below 
 
@@ -182,15 +183,14 @@ The user also needs to set the following self-explanatory environmental keys on 
 
 Type:
 
-    $(cocoa) $CONDA_PREFIX/bin/git-lfs clone https://github.com/CosmoLike/cocoa.git
+    $(cocoa) $CONDA_PREFIX/bin/git-lfs clone https://github.com/SBU-UNESP-2022-COCOA/cocoa.git
 
 to clone the repository. 
 
 (**expert**) Cocoa developers with set ssh keys  in GitHub may find more convenient to use the command
 
-    $(cocoa) $CONDA_PREFIX/bin/git-lfs clone git@github.com:CosmoLike/cocoa.git
-    $(cocoa) cd ./cocoa/Cocoa
-    
+    $(cocoa) $CONDA_PREFIX/bin/git-lfs clone git@github.com:SBU-UNESP-2022-COCOA/cocoa.git
+
 (**Warning**) We assumed in the command above users have installed the pre-requisite packages (including git-lfs) via the recommended **Conda installation method**. With other installation method, `$CONDA_PREFIX/bin/git-lfs` should be replaced with `git-lfs`. 
 
 (**Warning**) We have a limited monthly quota in bandwidth for [Git LFS](https://git-lfs.github.com) files, and therefore we ask users to use good judgment in the number of times they clone Cocoa's main repository. 
@@ -244,7 +244,6 @@ Assuming the user opted for the easier *Conda installation* and located the term
 
 **Step 4 of 5**: select the number of OpenMP cores
     
-    $(cocoa)(.local) export OMP_PROC_BIND=close
     $(cocoa)(.local) export OMP_NUM_THREADS=4
 
 **Step 5 of 5**: run `cobaya-run` on a the first example YAML files we provide.
