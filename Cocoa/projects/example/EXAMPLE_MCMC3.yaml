@@ -6,8 +6,7 @@ likelihood:
     path: ./external_modules/data/sn_data
   planck_2018_highl_plik.TT:
     path: ./external_modules/
-    clik_file: plc_3.0/hi_l/plik/plik_rd12_HM_v22_TT_1100.clik
-    # LMIN = 50, LMAX = 1100
+    clik_file: plc_3.0/hi_l/plik/plik_rd12_HM_v22_TT.clik
 
 params:
   logA:
