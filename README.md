@@ -183,13 +183,13 @@ The user also needs to set the following self-explanatory environmental keys on 
 
 Type:
 
-    $(cocoa) $CONDA_PREFIX/bin/git-lfs clone https://github.com/SBU-UNESP-2022-COCOA/cocoa.git
+    $(cocoa) $CONDA_PREFIX/bin/git-lfs clone https://github.com/SBU-UNESP-2022-COCOA/cocoa2.git
 
 to clone the repository. 
 
 (**expert**) Cocoa developers with set ssh keys  in GitHub may find more convenient to use the command
 
-    $(cocoa) $CONDA_PREFIX/bin/git-lfs clone git@github.com:SBU-UNESP-2022-COCOA/cocoa.git
+    $(cocoa) $CONDA_PREFIX/bin/git-lfs clone git@github.com:SBU-UNESP-2022-COCOA/cocoa2.git
 
 (**Warning**) We assumed in the command above users have installed the pre-requisite packages (including git-lfs) via the recommended **Conda installation method**. With other installation method, `$CONDA_PREFIX/bin/git-lfs` should be replaced with `git-lfs`. 
 
@@ -281,6 +281,8 @@ The projects folder was designed to include all Cosmolike projects. Like the las
 
     $ cd ./cocoa/Cocoa/projects
     $ git clone git@github.com:CosmoLike/cocoa_XXX.git XXX
+
+Example of cosmolike projects: [lsst_y1](https://github.com/SBU-UNESP-2022-COCOA/cocoa_lsst_y1), [des_y3](https://github.com/SBU-UNESP-2022-COCOA/cocoa_des_y3).
 
 (**warning**) The Cosmolike Organization hosts a Cobaya-Cosmolike project named XXX at `CosmoLike/cocoa_XXX`. However, our provided scripts and template YAML files assume the removal of the `cocoa_` prefix when cloning the repository.
 
