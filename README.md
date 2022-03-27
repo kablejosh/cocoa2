@@ -59,8 +59,7 @@ The more straightforward way to install most prerequisites is via [Conda](https:
       'conda-forge::pandas=1.3.4' \
       'conda-forge::mpi4py=3.1.2' \
       'conda-forge::matplotlib=3.5.0' \
-      'conda-forge::astropy=4.3.1' \
-      'conda-forge::tbb-devel=2021.5.0'
+      'conda-forge::astropy=4.3.1' 
  
 With this installation method, users must activate the Conda environment whenever working with Cocoa, as shown below 
 
@@ -135,7 +134,6 @@ The local installation via cocoa's internal cache is selected whenever the envir
 
     #export DOCKER_INSTALLATION=1
     #export MINICONDA_INSTALLATION=1
-    #export MACOS_HOMEBREW_INSTALLATION=1
     export MANUAL_INSTALLATION=1
     
 The user also needs to set the following self-explanatory environmental keys on [set_installation_options](https://github.com/CosmoLike/cocoa/blob/main/Cocoa/set_installation_options):
