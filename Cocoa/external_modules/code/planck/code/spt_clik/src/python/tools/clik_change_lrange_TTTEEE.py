@@ -13,6 +13,7 @@ import os
 import shutil
 import clik.hpy as hpy
 
+# clik_change_lrange_TTTEEE.py 35 650 
 
 def change_gibbs_gauss(inhf,lklfile,outfile,lmin,lmax):
   olmin = inhf["clik/lkl_0/lmin"]
@@ -222,10 +223,10 @@ def main(argv):
 
   inhf = hpy.File(lklfile)
   ty = inhf["clik/lkl_0/lkl_type"]
-  if ty not in ("smica","gibbs_gauss"):
-    print("can only change lmin and lmax for plik and commander TT likelihoods")
-    sys.exit(-1)
-  assert ty in ["smica","gibbs_gauss"],"Cannot change lrange for likelihood type %s"%ty
+  #if ty not in ("smica","gibbs_gauss"):
+  #  print("can only change lmin and lmax for plik and commander TT likelihoods")
+  #  sys.exit(-1)
+  #assert ty in ["smica","gibbs_gauss"],"Cannot change lrange for likelihood type %s"%ty
   fnc = globals()["change_%s"%ty]
   fnc(inhf,lklfile,outfile,lmin,lmax)
   
