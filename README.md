@@ -28,7 +28,7 @@ Cocoa allows users to run [CosmoLike](https://github.com/CosmoLike) routines ins
 
 ## Installing Miniconda <a name="sbu_overview_conda"></a>
 
-Download and Install Miniconda (please adapt `CONDA_DIR`):
+Download and run Miniconda installation script (please adapt `CONDA_DIR`):
 
     export CONDA_DIR=/gpfs/home/vinmirandabr/miniconda
 
