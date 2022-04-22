@@ -1,6 +1,7 @@
 # Table of contents
 1. [Overview of the Cobaya-CosmoLike Joint Architecture (Cocoa)](#overview)
-2. [Special Instructions for the SBU supercomputer](#sbu_overview)
+2. [Special Instructions for the SBU supercomputer](#sbu_overview) 
+    1. [Installing Miniconda](#sbu_overview_conda) 
 3. [Installation of Cocoa's required packages](#required_packages)
     1. [Via Conda (best for Linux)](#required_packages_conda)
     2. [Via Docker (best for MacOS/Windows)](#required_packages_docker)
@@ -25,7 +26,9 @@ Cocoa allows users to run [CosmoLike](https://github.com/CosmoLike) routines ins
 
 ## Special Instructions for the SBU supercomputer <a name="sbu_overview"></a>
 
-Installing Miniconda (please adapt `CONDA_DIR`):
+## Installing Miniconda <a name="sbu_overview_conda"></a>
+
+Download and Install Miniconda (please adapt `CONDA_DIR`):
 
     export CONDA_DIR=/gpfs/home/vinmirandabr/miniconda
 
