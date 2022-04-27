@@ -122,11 +122,12 @@ class MultiFluidDE(DarkEnergyModel):
         ("wa", c_double, "Late DE EoS parameter"),
         ("zc", c_double, "EDE critical redshift."),
         ("fde_zc", c_double, "EDE energy contribution at critical redshift."),
+        ("theta_i", c_double, "Initial field value divided by the potential frequency."),
         ("wn", c_double, "EDE transition EoS parameter.")
     ]
 
     def set_params(self, num_of_components, models, w0 = -1, wa = 0,
-                   zc = 3000, fde_zc = 0, wn = 1):
+                   zc = 3000, fde_zc = 0, wn = 1, theta_i = 1):
         """
          Set dark energy fluid parameters.
         """
@@ -143,6 +144,7 @@ class MultiFluidDE(DarkEnergyModel):
         self.wa = wa
         self.zc = zc
         self.fde_zc = fde_zc
+        self.theta_i = theta_i
         self.wn = wn
 
 @fortran_class

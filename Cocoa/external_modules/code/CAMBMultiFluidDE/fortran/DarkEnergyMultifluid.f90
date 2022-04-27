@@ -15,9 +15,9 @@ module MultiFluidDE
     real(dl), dimension(max_num_of_fluids * max_num_of_params) :: de_params
     integer, dimension(max_num_of_fluids) :: models
     ! JVR - TODO go back to a parameter array
-    real(dl) :: w0, wa
-    real(dl) :: zc, fde_zc, wn
-    real(dl) :: grhonode_zc
+    real(dl) :: w0, wa ! CPL parameters
+    real(dl) :: zc, fde_zc, theta_i = 3.1_dl/2._dl, wn ! Fluid EDE parameters
+    real(dl) :: grhonode_zc, freq, n ! Fluid EDE internal parameters
   contains
   procedure :: Init => TMultiFluidDE_Init
   procedure :: w_de => TMultiFluidDE_w_de
@@ -221,8 +221,8 @@ module MultiFluidDE
     real(dl), dimension(max_num_of_fluids), intent(in) :: w
     real(dl), intent(in) :: a, adotoa, k, z
     integer, intent(in) :: w_ix
-    real(dl) :: Hv3_over_k, v, delta
-    real(dl), parameter :: cs2 = 1._dl
+    real(dl) :: Hv3_over_k, v, delta, fac
+    real(dl) :: cs2
     integer :: i, delta_index
 
     ! Fluid equations in synchronous gauge https://arxiv.org/pdf/1806.10608.pdf
@@ -231,11 +231,20 @@ module MultiFluidDE
     do i=1, this%num_of_components
       delta_index = w_ix + 2*(i-1)
       if (this%models(1) == 2) then
-        delta_index = delta_index - 1
+        delta_index = delta_index - 1 ! PPF has one less equation
         if (i == 1) then
           cycle
         end if
       end if
+
+      if (i == 2 .and. this%models(2) == 1 .and. this%wn < 0.9999) then
+        ! Simulating sound speed dynamics for Axion fluid EDE
+        fac = 2*a**(2-6*this%wn)*this%freq**2
+        cs2 = (fac*(this%n-1) + k**2)/(fac*(this%n+1) + k**2)
+      else
+        cs2 = 1._dl
+      end if
+
       delta = y(delta_index)
       v = y(delta_index + 1)
       Hv3_over_k =  3 * adotoa * v / k
@@ -246,7 +255,7 @@ module MultiFluidDE
       ! The remaining term is the one involving the adiabatic sound speed
       ayprime(delta_index) = ayprime(delta_index) - adotoa*Hv3_over_k*a*this%w_derivative(a,i)
       ! JVR - checked the term involving 1/3 * (d(ln(1+w))/lna)
-      ! Velocity
+      ! Velocity evolution
       if (abs(w(i)+1) > 1e-6) then
           ayprime(delta_index + 1) = - adotoa * (1 - 3 * cs2) * v + &
               k * cs2 * delta / (1 + w(i))
@@ -346,7 +355,7 @@ module MultiFluidDE
     use results
     class(TMultiFluidDE), intent(inout) :: this
     class(TCAMBdata), intent(in), target :: State
-    real(dl) :: ac
+    real(dl) :: ac, grho_rad, xc, F, p, mu, n
 
     ! JVR - If we need any information from other components, Init is the place to get it
 
@@ -364,7 +373,25 @@ module MultiFluidDE
       grhode_today = State%grhov
       grhocrit = State%grhocrit
       this%grhonode_zc = State%grho_no_de(ac) / ac**4
+      grho_rad = (kappa/c**2*4*sigma_boltz/c**3*State%CP%tcmb**4*Mpc**2*(1+3.046*7._dl/8*(4._dl/11)**(4._dl/3)))
     end select
+
+    ! Need to implement sound speed dynamics
+    if (this%wn < 0.9999) then
+      ! n <> infinity
+      ! get (very) approximate result for sound speed parameter; arXiv:1806.10608  Eq 30 (but mu may not exactly agree with what they used)
+      n = nint((1+this%wn)/(1-this%wn))
+      ac = 1._dl / (1._dl + this%zc)
+      !Assume radiation domination, standard neutrino model; H0 factors cancel
+      xc = ac**2/2/sqrt(grho_rad/3)
+      F=7./8
+      p=1./2
+      mu = 1/xc*(1-cos(this%theta_i))**((1-n)/2.)*sqrt((1-F)*(6*p+2)*this%theta_i/n/sin(this%theta_i))
+      this%freq =  mu*(1-cos(this%theta_i))**((n-1)/2.)* &
+          sqrt(const_pi)*Gamma((n+1)/(2.*n))/Gamma(1+0.5/n)*2.**(-(n**2+1)/(2.*n))*3.**((1./n-1)/2)*ac**(-6./(n+1)+3) &
+          *( ac**(6*n/(n+1.))+1)**(0.5*(1./n-1))
+      this%n = n
+    end if
   end subroutine TMultiFluidDE_Init
 
   subroutine TMultiFluidDE_ReadParams(this, Ini)
