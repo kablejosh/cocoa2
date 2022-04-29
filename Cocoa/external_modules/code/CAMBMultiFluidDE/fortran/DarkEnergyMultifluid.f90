@@ -4,7 +4,7 @@ module MultiFluidDE
   use constants
   use classes
   implicit none
-
+  ! JVR - latest version from April 29th, 2022
   private
   ! JVR - can we use these quantities from results.f90 without needing to bring them to this file via the Init subroutine?
   real(dl) :: grhocrit
