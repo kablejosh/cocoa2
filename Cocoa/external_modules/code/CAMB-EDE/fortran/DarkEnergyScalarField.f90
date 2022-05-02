@@ -316,6 +316,12 @@
         ! Thus, we need to evolve numerically the field, since rho_phi(a) = phi'(a)^2 / 2a^2 + V(phi(a))
         ! All other components have been initialized at this point
 
+        if (this%state%Omega_de < 0 .and. this%state%cp%omk == 0) then
+            write(*,*) "H0 = ", this%state%CP%H0
+            global_error_flag = error_darkenergy
+            call GlobalError("Omega_de is negative; check H0, omega_m values", error_darkenergy)
+        end if
+
         call this%TScalarField%Init(State)
 
         if (this%use_zc) then
@@ -478,7 +484,7 @@
         if (global_error_flag/=0) then
             write(*,*) 'TEarlyDarkEnergy error integrating', afrom, aend
             write(*,*) this%n, this%f, this%m, this%theta_i
-            stop
+            !stop
             check_error = .false.
             return
         end if
@@ -667,9 +673,12 @@
         integer iflag, iter
         class(TEarlyDarkEnergy), intent(inout) :: this
         real(dl) :: log_params(2)
+        real(dl) :: ac
 
         ! 1 - log_params(*) will be the initial guess for the algorithm
         if (this%which_potential == 1) then
+            ! log_params(1) = log(this%V0)]
+            ac = 1._dl/(1 + this%zc)
             log_params(1) = log(this%V0)
             log_params(2) = log(this%initial_phi)
         else
