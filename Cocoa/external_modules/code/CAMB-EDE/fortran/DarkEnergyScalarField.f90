@@ -316,12 +316,6 @@
         ! Thus, we need to evolve numerically the field, since rho_phi(a) = phi'(a)^2 / 2a^2 + V(phi(a))
         ! All other components have been initialized at this point
 
-        if (this%state%Omega_de < 0 .and. this%state%cp%omk == 0) then
-            write(*,*) "H0 = ", this%state%CP%H0
-            global_error_flag = error_darkenergy
-            ! call GlobalError("Omega_de is negative; check H0, omega_m values", error_darkenergy)
-        end if
-
         call this%TScalarField%Init(State)
 
         if (this%use_zc) then
