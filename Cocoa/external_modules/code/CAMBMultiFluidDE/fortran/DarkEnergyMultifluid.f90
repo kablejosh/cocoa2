@@ -59,6 +59,8 @@ module MultiFluidDE
   procedure :: fde_peak
   end type TMultiFluidDE
 
+  procedure(TClassDverk) :: dverk
+
   public TMultiFluidDE
 
   contains
@@ -645,7 +647,7 @@ module MultiFluidDE
 
   subroutine Init_ScalarField(this)
       use Powell
-      class(TMultiFluidDE), intent(inout) :: this
+      type(TMultiFluidDE), intent(inout) :: this
       real(dl) aend, afrom
       integer, parameter ::  NumEqs=2
       real(dl) c(24),w(NumEqs,9), y(NumEqs)
@@ -844,7 +846,7 @@ module MultiFluidDE
   end function fde_peak
 
   function match_zc(this, logm)
-      class(TMultiFluidDE), intent(inout) :: this
+      type(TMultiFluidDE), intent(inout) :: this
       real(dl), intent(in) :: logm
       real(dl) match_zc, zc, fde_zc
 
@@ -865,7 +867,7 @@ module MultiFluidDE
   end function match_fde
 
   function match_fde_zc(this, x)
-      class(TMultiFluidDE) :: this
+      type(TMultiFluidDE) :: this
       real(dl), intent(in) :: x(:)
       real(dl) match_fde_zc, zc, fde_zc
 
