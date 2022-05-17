@@ -116,23 +116,32 @@ module MultiFluidDE
     real(dl), dimension(max_num_of_fluids) :: grho_de
     real(dl), intent(in) :: a
     integer :: i
-    real(dl) :: w0, wa, zc, ac, fde_zc, oma_zc, wn, z, phi, phidot
+    real(dl) :: w0, wa, zc, ac, fde_zc, oma_zc, wn, z, phi, phidot, grho_late_today, grho_ede_today
 
     ! Returns 8*pi*G*rho_de, no scale factors
-    ! Assuming EDE is negligible today
     ! grhode_today = grhocrit * (1 - Omega_baryons - Omega_cdm - Omega_neutrinos - Omega_photons)
     grho_de = 0
     do i = 1, this%num_of_components
       if (i == 1) then
+        if (this%num_of_components == 2 .and. this%models(2) == 1 .and. this%zc < 100) then ! Discounting EDE contribution today from total DE energy
+          zc = this%zc
+          fde_zc = this%fde_zc
+          wn = this%wn
+          oma_zc = fde_zc * this%grhonode_zc / (grhocrit * (1 - fde_zc))
+          grho_ede_today = grhocrit * (2._dl * oma_zc)/(1 + (1+zc)**(3*(1+wn)))
+          grho_late_today = grhode_today - grho_ede_today
+        else ! Don't want to do these calculations if EDE is indeed negligible
+          grho_late_today = grhode_today
+        end if
         if (this%models(i) == 1) then
           ! w_constant model
           !w0 = this%de_params(max_num_of_params*(i-1) + 1)
           w0 = this%w0
-          grho_de(i) = grhode_today * a**(-3*(1 + w0))
+          grho_de(i) = grho_late_today * a**(-3*(1 + w0))
         else if (this%models(i) == 2) then
           w0 = this%w0
           wa = this%wa
-          grho_de(i) = grhode_today * a**(-3*(1 + w0 + wa)) * exp(-3 * wa * (1-a))
+          grho_de(i) = grho_late_today * a**(-3*(1 + w0 + wa)) * exp(-3 * wa * (1-a))
         else
           stop "[Multifluid DE] Invalid dark energy model for fluid 1"
         end if
@@ -150,6 +159,7 @@ module MultiFluidDE
           ac = 1._dl/(1._dl + zc)
           oma_zc = fde_zc * this%grhonode_zc / (grhocrit * (1 - fde_zc))
           grho_de(i) = grhocrit * (2._dl * oma_zc)/(1 + ( (1+zc)/(1+z) )**(3*(1+wn)))
+          ! grho_ede(a = 1) = grhocrit * (2._dl * oma_zc)/(1 + (1+zc)**(3*(1+wn)))
         else if (this%models(i) == 2) then
           ! Scalar field EDE with either rock 'n' roll potential or Axion
           if (.not. this%did_scalar_field_init) then
@@ -647,7 +657,7 @@ module MultiFluidDE
 
   subroutine Init_ScalarField(this)
       use Powell
-      type(TMultiFluidDE), intent(inout) :: this
+      class(TMultiFluidDE), intent(inout) :: this
       real(dl) aend, afrom
       integer, parameter ::  NumEqs=2
       real(dl) c(24),w(NumEqs,9), y(NumEqs)
@@ -846,7 +856,7 @@ module MultiFluidDE
   end function fde_peak
 
   function match_zc(this, logm)
-      type(TMultiFluidDE), intent(inout) :: this
+      class(TMultiFluidDE), intent(inout) :: this
       real(dl), intent(in) :: logm
       real(dl) match_zc, zc, fde_zc
 
@@ -867,7 +877,7 @@ module MultiFluidDE
   end function match_fde
 
   function match_fde_zc(this, x)
-      type(TMultiFluidDE) :: this
+      class(TMultiFluidDE) :: this
       real(dl), intent(in) :: x(:)
       real(dl) match_fde_zc, zc, fde_zc
 
