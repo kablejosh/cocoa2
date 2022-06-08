@@ -91,8 +91,10 @@ module MultiFluidDE
             w_de(i) = this%w0
           else if (z < this%z2) then
             w_de(i) = this%w1
-          else
+          else if (z < this%z3) then
             w_de(i) = this%w2
+          else
+            w_de(i) = this%w3
           end if
         else
           stop "[Multifluid DE] Invalid dark energy model for fluid 1"
@@ -162,7 +164,7 @@ module MultiFluidDE
           else if (z < this%z3) then
             grho_de(i) = grho_late_today * (1+this%z1)**(3*(1 + this%w0)) * ((1+this%z2)/(1+this%z1))**(3*(1+this%w1)) * (a * (1+this%z2))**(-3*(1 + this%w2))
           else
-            grho_de(i) = grho_late_today * (1+this%z1)**(3*(1 + this%w0)) * ((1+this%z2)/(1+this%z1))**(3*(1+this%w1)) * ((1+this%z3) * (1+this%z2))**(3*(1 + this%w2)) * * (a * (1+this%z3))**(-3*(1 + this%w3))
+            grho_de(i) = grho_late_today * (1+this%z1)**(3*(1 + this%w0)) * ((1+this%z2)/(1+this%z1))**(3*(1+this%w1)) * ((1+this%z3) / (1+this%z2))**(3*(1 + this%w2)) * (a * (1+this%z3))**(-3*(1 + this%w3))
           end if
         else
           stop "[Multifluid DE] Invalid dark energy model for fluid 1"
