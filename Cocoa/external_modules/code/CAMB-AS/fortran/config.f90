@@ -9,7 +9,7 @@
 
     logical :: output_file_headers = .true.
 
-    logical :: DebugMsgs =.true. !Set to true to view progress and timing
+    logical :: DebugMsgs =.false. !Set to true to view progress and timing
 
     logical, parameter :: DebugEvolution = .true. !Set to true to do all the evolution for all k
 
