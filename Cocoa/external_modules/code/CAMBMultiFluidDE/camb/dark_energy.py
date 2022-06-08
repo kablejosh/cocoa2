@@ -117,23 +117,28 @@ class MultiFluidDE(DarkEnergyModel):
 
     _fields_ = [
         ("DebugLevel", c_int, "Verbosity of the module"),
-        ("de_params", c_double*(max_num_of_fluids*max_num_of_params), "Array for dark energy fluid parameters, see documentation."),
         ("models", c_int*max_num_of_fluids, "Which models to use for each fluid."),
-        ("w0", c_double, "Late DE EoS parameter"),
-        ("wa", c_double, "Late DE EoS parameter"),
+        ("w0", c_double, "CPL parameter"),
+        ("wa", c_double, "CPL parameter"),
+        ("w1", c_double, "Second binned w"),
+        ("w2", c_double, "Third binned w"),
+        ("w3", c_double, "Fourth binned w"),
+        ("z1", c_double, "Bin limit"),
+        ("z2", c_double, "Bin limit"),
+        ("z3", c_double, "Bin limit"),
         ("zc", c_double, "EDE critical redshift."),
         ("fde_zc", c_double, "EDE energy contribution at critical redshift."),
         ("theta_i", c_double, "Initial field value divided by the potential frequency."),
         ("wn", c_double, "EDE transition EoS parameter."),
+        ("n", c_double, "Power law of the axion/monomial potential."),
+        ("grhonode_zc", c_double, "Energy density of everything except DE at zc."),
+        ("freq", c_double, "Oscillation frequency of the axion field."),
+        ("use_zc", c_bool, "If you want to parametrize scalar field EDE with zc and fde_zc."),
+        ("which_potential", c_double, "Which potential to use: 1 for axion, 2 for monomial."),
         ("V0", c_double, "Potential scale of the monomial potential."),
         ("m", c_double, "Axion EDE parameter."),
         ("f", c_double, "Axion EDE parameter"),
         ("initial_phi", c_double, "Initial field value"),
-        ("use_zc", c_bool, "If you want to parametrize scalar field EDE with zc and fde_zc."),
-        ("which_potential", c_double, "Which potential to use: 1 for axion, 2 for monomial."),
-        ("n", c_double, "Power law of the axion/monomial potential."),
-        ("grhonode_zc", c_double, "Energy density of everything except DE at zc."),
-        ("freq", c_double, "Oscillation frequency of the axion field."),
         ("astart", c_double, "Scale factor to begin evolving the Klein Gordon equation."),
         ("did_scalar_field_init", c_bool, "Has the scalar field initialized?"),
         ("__npoints_linear", c_int, "Number of points in linear integration of KG equation."),
@@ -157,7 +162,7 @@ class MultiFluidDE(DarkEnergyModel):
     ]
 
     def set_params(self, num_of_components, models, w0 = -1, wa = 0,
-                   zc = 3000, fde_zc = 0, wn = 1, theta_i = 1,
+                   zc = 3000, fde_zc = 0, wn = 1, theta_i = 1, w1 = -1, w2 = -1, w3 = -1, z1 = 0.7, z2 = 1.4, z3 = 2.1,
                    which_potential=1, use_zc=True, n=3, m=5e-54, f=0.05, V0=1e-115, initial_phi=1):
         """
          Set dark energy fluid parameters.
@@ -173,6 +178,12 @@ class MultiFluidDE(DarkEnergyModel):
         self.models = models_in_ctypes
         self.w0 = w0
         self.wa = wa
+        self.w1 = w1
+        self.w2 = w2
+        self.w3 = w3
+        self.z1 = z1
+        self.z2 = z2
+        self.z3 = z3
         self.zc = zc
         self.fde_zc = fde_zc
         self.theta_i = theta_i

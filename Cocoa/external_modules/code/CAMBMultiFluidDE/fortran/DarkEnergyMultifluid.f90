@@ -15,17 +15,17 @@ module MultiFluidDE
 
   type, extends(TDarkEnergyModel) :: TMultiFluidDE
     integer :: DebugLevel
-    real(dl), dimension(max_num_of_fluids * max_num_of_params) :: de_params
     integer, dimension(max_num_of_fluids) :: models
     ! JVR - TODO go back to a parameter array
     ! JVR - model parameters
     real(dl) :: w0, wa ! CPL parameters
-    real(dl) :: zc, fde_zc, theta_i = 3.1_dl/2._dl, wn ! Fluid EDE parameters
-    real(dl) :: V0 = 1d-115, m = 5d-54, f = 0.05, initial_phi = 1._dl ! Scalar field EDE parameters
+    real(dl) :: w1, w2, w3, z1, z2, z3 ! Binned w
+    real(dl) :: zc, fde_zc, theta_i, wn ! Fluid EDE parameters
+    real(dl) :: n, grhonode_zc, freq ! Fluid EDE internal parameters
+    ! JVR - Internal variables, scalar field variables
     logical :: use_zc
     integer :: which_potential ! 1 for rock 'n' roll, 2 for axion 
-    ! JVR - Internal variables, scalar field variables
-    real(dl) :: n, grhonode_zc, freq ! Fluid EDE internal parameters
+    real(dl) :: V0 = 1d-115, m = 5d-54, f = 0.05, initial_phi = 1._dl ! Scalar field EDE parameters
     real(dl) :: astart = 1e-6_dl ! Scalar field integration start
     real(dl), dimension(:), allocatable :: sampled_a, phi_a, phidot_a
     logical :: did_scalar_field_init = .false.
@@ -84,6 +84,16 @@ module MultiFluidDE
         else if (this%models(i) == 2) then
           ! w0wa with PPF - allows phantom divide crossing
           w_de(i) = this%w0 + this%wa * (1-a)
+        else if (this%models(i) == 3) then
+          ! Binned w model
+          z = 1._dl/a - 1._dl
+          if (z < this%z1) then
+            w_de(i) = this%w0
+          else if (z < this%z2) then
+            w_de(i) = this%w1
+          else
+            w_de(i) = this%w2
+          end if
         else
           stop "[Multifluid DE] Invalid dark energy model for fluid 1"
         end if
@@ -142,6 +152,18 @@ module MultiFluidDE
           w0 = this%w0
           wa = this%wa
           grho_de(i) = grho_late_today * a**(-3*(1 + w0 + wa)) * exp(-3 * wa * (1-a))
+        else if (this%models(i) == 3) then
+          ! Binned w model
+          z = 1._dl/a - 1
+          if (z < this%z1) then
+            grho_de(i) = grho_late_today * a**(-3*(1 + this%w0))
+          else if (z < this%z2) then
+            grho_de(i) = grho_late_today * (1+this%z1)**(3*(1 + this%w0)) * (a * (1+this%z1))**(-3*(1+this%w1))
+          else if (z < this%z3) then
+            grho_de(i) = grho_late_today * (1+this%z1)**(3*(1 + this%w0)) * ((1+this%z2)/(1+this%z1))**(3*(1+this%w1)) * (a * (1+this%z2))**(-3*(1 + this%w2))
+          else
+            grho_de(i) = grho_late_today * (1+this%z1)**(3*(1 + this%w0)) * ((1+this%z2)/(1+this%z1))**(3*(1+this%w1)) * ((1+this%z3) * (1+this%z2))**(3*(1 + this%w2)) * * (a * (1+this%z3))**(-3*(1 + this%w3))
+          end if
         else
           stop "[Multifluid DE] Invalid dark energy model for fluid 1"
         end if
@@ -219,7 +241,7 @@ module MultiFluidDE
     dgqe = 0
     do i=1, this%num_of_components
       delta_index = w_ix + 2*(i - 1)
-      if (i == 1 .and. this%models(1) == 2) then ! w0wa requires PPF
+      if (i == 1 .and. (this%models(1) == 2) .or. this%models(i) == 3) then ! w0wa requires PPF
         call PPF_Perturbations(this, dgrhoe, dgqe, &
         a, dgq, dgrho, grho, grhov_t, w, gpres_noDE, &
         etak, adotoa, k, kf1, ay, ayprime, w_ix)
@@ -261,6 +283,7 @@ module MultiFluidDE
           ! w_constant model
           dwda = 0
         else
+          ! w0wa and binW models use PPF equations, so we don't need to calculate this!
           stop "[Multifluid DE] Invalid dark energy model for fluid 1"
         end if
 
@@ -300,10 +323,10 @@ module MultiFluidDE
     ! PPF has only one equation for Gamma and it is initialized in the PerturbedStressEnergy subroutine
     do i=1, this%num_of_components
       delta_index = w_ix + 2*(i-1)
-      if (this%models(1) == 2) then
+      if (this%models(1) == 2 .or. this%models(1) == 3) then
         delta_index = delta_index - 1 ! PPF has one less equation
         if (i == 1) then
-          cycle
+          cycle ! The PPF evolution equations are defined in another function
         end if
       end if
 
@@ -361,6 +384,9 @@ module MultiFluidDE
     else if (this%models(1) == 2) then
       w = this%w0
       wa = this%wa
+    else if (this%models(1) == 3) then
+      w = this%w0
+      wa = 0
     else
       stop "[Multifluid DE] Effective w0 wa not implemented for this DE model"
     end if
@@ -376,7 +402,7 @@ module MultiFluidDE
 
     y = 0
 
-    end subroutine TMultiFluidDE_PerturbationInitial
+  end subroutine TMultiFluidDE_PerturbationInitial
 
   ! --------------------- PPF specific subroutines ---------------------
 
@@ -507,7 +533,6 @@ module MultiFluidDE
     if (this%models(2)==2) then
       call Init_ScalarField(this)
     end if
-
   end subroutine TMultiFluidDE_Init
 
   subroutine TMultiFluidDE_ReadParams(this, Ini)
