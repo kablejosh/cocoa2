@@ -33,12 +33,16 @@ class DarkEnergyEqnOfState(DarkEnergyModel):
         ("wa", c_double, "-dw/da(0)"),
         ("cs2", c_double, "fluid rest-frame sound speed squared"),
         ("use_tabulated_w", c_bool, "using an interpolated tabulated w(a) rather than w, wa above"),
-        ("__no_perturbations", c_bool, "turn off perturbations (unphysical, so hidden in Python)")
+        ("__no_perturbations", c_bool, "turn off perturbations (unphysical, so hidden in Python)"),
+        ("shear_model", c_int, "PPF-AS model"),
+        ("g0_ppf", c_double, "PPF-AS parameters"),
+        ("c_Gamma_ppf", c_double, "ppf parameter c_Gamma"),
+        ("c_g_ppf", c_double, "ppf parameter c_g")
     ]
 
     _methods_ = [('SetWTable', [numpy_1d, numpy_1d, POINTER(c_int)])]
 
-    def set_params(self, w=-1.0, wa=0, cs2=1.0):
+    def set_params(self, w=-1.0, wa=0, cs2=1.0, shear_model=1, g0_ppf=0.0, c_Gamma_ppf=1.0, c_g_ppf=0.01):
         """
          Set the parameters so that P(a)/rho(a) = w(a) = w + (1-a)*wa
 
@@ -50,6 +54,10 @@ class DarkEnergyEqnOfState(DarkEnergyModel):
         self.wa = wa
         self.cs2 = cs2
         self.validate_params()
+        self.shear_model = shear_model
+        self.g0_ppf = g0_ppf
+        self.c_Gamma_ppf = c_Gamma_ppf
+        self.c_g_ppf = c_g_ppf
 
     def validate_params(self):
         if not self.use_tabulated_w and self.wa + self.w > 0:
@@ -103,19 +111,19 @@ class DarkEnergyPPF(DarkEnergyEqnOfState):
     _fortran_class_module_ = 'DarkEnergyPPF'
     _fortran_class_name_ = 'TDarkEnergyPPF'
 
-    _fields_ = [
-        ("shear_model", c_int, "PPF-AS model"),
-        ("g0_ppf", c_double, "PPF-AS parameters"),
-        ("c_Gamma_ppf", c_double, "ppf parameter c_Gamma")
-    ]
+    # _fields_ = [
+    #     ("shear_model", c_int, "PPF-AS model"),
+    #     ("g0_ppf", c_double, "PPF-AS parameters"),
+    #     ("c_Gamma_ppf", c_double, "ppf parameter c_Gamma")
+    # ]
 
 
 
-    def set_params(self, shear_model=1, g0_ppf=0.0, c_Gamma_ppf=1.0):
-        self.shear_model = shear_model
-        self.g0_ppf = g0_ppf
-        self.c_Gamma_ppf = c_Gamma_ppf
-        print("testing ", self.shear_model, self.g0_ppf, self.c_Gamma_ppf)
+    # def set_params(self, shear_model=1, g0_ppf=0.0, c_Gamma_ppf=1.0):
+    #     self.shear_model = shear_model
+    #     self.g0_ppf = g0_ppf
+    #     self.c_Gamma_ppf = c_Gamma_ppf
+    #     print("testing ", self.shear_model, self.g0_ppf, self.c_Gamma_ppf)
 
     #KZ end
 

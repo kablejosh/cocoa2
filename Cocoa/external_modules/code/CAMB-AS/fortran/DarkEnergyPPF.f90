@@ -7,9 +7,9 @@
     private
 
     type, extends(TDarkEnergyEqnOfState) :: TDarkEnergyPPF
-        integer :: shear_model = 1.0 !KZ-edit: model of Anisotropic stress
-        real(dl) :: g0_ppf = 0.0 !KZ-edit: ppf parameter g0
-        real(dl) :: c_Gamma_ppf = 1.0 !KZ-edit
+        !integer :: shear_model = 1.0 !KZ-edit: model of Anisotropic stress
+        !real(dl) :: g0_ppf = 0.0 !KZ-edit: ppf parameter g0
+        !real(dl) :: c_Gamma_ppf = 1.0 !KZ-edit
         !real(dl) :: omT_over_ome !KZ-edit: add parameter Omega_T/Omega_DE
     contains
     procedure :: ReadParams => TDarkEnergyPPF_ReadParams
@@ -34,6 +34,7 @@
     this%cs2_lam = Ini%Read_Double('cs2_lam', 1.d0)
     this%g0_ppf = Ini%Read_Double('g0_ppf', 1.d0) !KZ-edit: read g0 from ini file
     this%c_Gamma_ppf = Ini%Read_Double('c_Gamma_ppf', 1.d0) !KZ-edit: read c_gamma from ini file 
+    this%c_g_ppf = Ini%Read_Double('c_g_ppf', 0.01_dl) !KZ-edit: read c_g from ini file 
     if (this%cs2_lam /= 1.d0) error stop 'cs2_lam not supported by PPF model'
     !call this%setcgammappf
 
@@ -157,6 +158,10 @@
     dgpiT=grhor_t*pir+grhog_t*pig + dgpi_nu_sum
     ppiT_prime = grhog_t*(pigdot/adotoa-4*pig) + grhor_t*(pirdot/adotoa-4*pir) + ppi_nu_dot_sum/ adotoa
 
+    !!KZ: for test
+    dgpiT = 0.0
+    ppiT_prime = 0.0
+
     ! Model loop begins
     ! Models for Effective Anisotropic Stress in PPF formalism,
     ! For each model, we need to define gppf, c_gamma, and whether it source the anisotropic stress from other component
@@ -165,7 +170,7 @@
     if(this%shear_model.eq.1 )then  
 
         fGppf = 0._dl
-        cg = 0.01
+        cg = this%c_g_ppf
 
         adotdotoa = (adotoa*adotoa - gpres_noDE-grhov_t*w)/2.0 !a dotdot over a
         k_H = k/adotoa
@@ -178,15 +183,16 @@
 
         fzetappf = 0.4*gsh
 
-        print *, "model = ", this%shear_model
-        print *, "g0_ppf = ", this%g0_ppf
-        print *, "c_Gamma_ppf = ", this%c_Gamma_ppf
-        CALL EXIT(1)
+        !print *, "model = ", this%shear_model
+        !print *, "g0_ppf = ", this%g0_ppf
+        !print *, "c_Gamma_ppf = ", this%c_Gamma_ppf
+        !CALL EXIT(1)
 
     else
         print *, "model = ", this%shear_model
         print *, "g0_ppf = ", this%g0_ppf
         print *, "c_Gamma_ppf = ", this%c_Gamma_ppf
+        print *, "c_g_ppf = ", this%c_g_ppf
         print *, "No such Anisotropic model"
         CALL EXIT(1)
     endif

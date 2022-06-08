@@ -30,6 +30,10 @@
         real(dl) :: cs2_lam = 1_dl !rest-frame sound speed, though may not be used
         logical :: use_tabulated_w = .false.  !Use interpolated table; note this is quite slow.
         logical :: no_perturbations = .false. !Don't change this, no perturbations is unphysical
+        integer :: shear_model = 1.0 !KZ-edit: model of Anisotropic stress
+        real(dl) :: g0_ppf = 0.0 !KZ-edit: ppf parameter g0
+        real(dl) :: c_Gamma_ppf = 1.0 !KZ-edit
+        real(dl) :: c_g_ppf = 0.01 !KZ-edit
         !Interpolations if use_tabulated_w=.true.
         Type(TCubicSpline) :: equation_of_state, logdensity
     contains
