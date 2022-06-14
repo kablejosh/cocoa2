@@ -132,7 +132,10 @@ class MultiFluidDE(DarkEnergyModel):
         ("wn", c_double, "EDE transition EoS parameter."),
         ("n", c_double, "Power law of the axion/monomial potential."),
         ("grhonode_zc", c_double, "Energy density of everything except DE at zc."),
-        ("freq", c_double, "Oscillation frequency of the axion field.")
+        ("freq", c_double, "Oscillation frequency of the axion field."),
+        ("fac1", c_double, "Power law of the axion/monomial potential."),
+        ("fac2", c_double, "Energy density of everything except DE at zc."),
+        ("fac3", c_double, "Oscillation frequency of the axion field.")
     ]
 
     def set_params(self, num_of_components, models, w0 = -1, wa = 0,
