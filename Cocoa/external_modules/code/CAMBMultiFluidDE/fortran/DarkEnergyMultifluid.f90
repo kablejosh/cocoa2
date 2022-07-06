@@ -200,18 +200,20 @@ module MultiFluidDE
     integer, intent(in) :: w_ix
     real(dl) :: phi, phidot, delta_phi, delta_phi_prime
     integer :: i, delta_index
+    logical :: use_ppf
 
     ! TODO clean variables
     dgrhoe = 0
     dgqe = 0
+    use_ppf = (this%models(1) == 2 .or. this%models(1) == 3) ! If using a model with PPF, this is true
     do i=1, this%num_of_components
       delta_index = w_ix + 2*(i - 1)
-      if (i == 1 .and. (this%models(1) == 2) .or. this%models(1) == 3) then ! w0wa requires PPF
+      if (i == 1 .and. use_ppf) then ! w0wa and binw requires PPF
         call PPF_Perturbations(this, dgrhoe, dgqe, &
         a, dgq, dgrho, grho, grhov_t, w, gpres_noDE, &
         etak, adotoa, k, kf1, ay, ayprime, w_ix)
       else
-        if (this%models(1) == 2) then
+        if (use_ppf) then
           delta_index = delta_index - 1 ! PPF has only one perturbation equation, so I need to decrease one index
         end if
 
@@ -272,13 +274,16 @@ module MultiFluidDE
     real(dl) :: Hv3_over_k, v, delta, fac
     real(dl) :: cs2, phi, phidot, delta_phi, delta_phi_prime
     integer :: i, delta_index
+    logical :: use_ppf
+
+    use_ppf = (this%models(1)==2 .or. this%models(1)==3)
 
     ! Fluid equations in synchronous gauge https://arxiv.org/pdf/1806.10608.pdf
     ! Assuming cs_2 = 1 for all fluids
     ! PPF has only one equation for Gamma and it is initialized in the PerturbedStressEnergy subroutine
     do i=1, this%num_of_components
       delta_index = w_ix + 2*(i-1)
-      if (this%models(1) == 2 .or. this%models(1) == 3) then
+      if (use_ppf) then
         delta_index = delta_index - 1 ! PPF has one less equation
         if (i == 1) then
           cycle ! The PPF evolution equations are defined in another function
@@ -426,13 +431,13 @@ module MultiFluidDE
 
     this%is_cosmological_constant = .false.
     this%num_perturb_equations = 2 * this%num_of_components
-    if (this%models(1) == 2) then
-      this%num_perturb_equations = this%num_perturb_equations - 1
+    if (this%models(1) == 2 .or. this%models(1)==3) then
+      this%num_perturb_equations = this%num_perturb_equations - 1 ! PPF only has one equation
     end if
 
     ac = 1._dl/(1+this%zc)
 
-    if (this%models(1)==3) then
+    if (this%models(1)==3) then ! Precalculate some lengthy factors
       this%fac3 = (1+this%z1)**(3*(1 + this%w0)) * ((1+this%z2)/(1+this%z1))**(3*(1+this%w1)) * ((1+this%z3) / (1+this%z2))**(3*(1 + this%w2))
       this%fac2 = (1+this%z1)**(3*(1 + this%w0)) * ((1+this%z2)/(1+this%z1))**(3*(1+this%w1))
       this%fac1 = (1+this%z1)**(3*(1 + this%w0))
