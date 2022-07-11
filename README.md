@@ -2,6 +2,7 @@
 1. [Overview of the Cobaya-CosmoLike Joint Architecture (Cocoa)](#overview)
 2. [Special Instructions for the SBU supercomputer](#sbu_overview) 
     1. [Installing Miniconda](#sbu_overview_conda) 
+    2. [Using module Anaconda](#sbu_overview_anaconda)    
 3. [Installation of Cocoa's required packages](#required_packages)
     1. [Via Conda (best for Linux)](#required_packages_conda)
     2. [Via Docker (best for MacOS/Windows)](#required_packages_docker)
@@ -62,6 +63,16 @@ When running conda for the first time, use the instructions below to configure t
     conda config --system --set channel_priority strict 
     
     conda init bash
+
+## Using module Anaconda <a name="sbu_overview_anaconda"></a>
+
+Before installing or loading cocoa conda environment, type
+
+    module load python
+    module load anaconda
+
+    conda init
+    source ~/.bashrc
 
 ## Installation of Cocoa's required packages <a name="required_packages"></a>
 
