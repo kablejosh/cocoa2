@@ -52,15 +52,15 @@ please restart the ssh session so that the changes in `~/.bashrc` have an effect
 
 When running conda for the first time, use the instructions below to configure the use of channels
 
-    conda config --system --set auto_update_conda false 
+    conda config --set auto_update_conda false 
 
-    conda config --system --set show_channel_urls true 
+    conda config --set show_channel_urls true 
 
-    conda config --system --set auto_activate_base false 
+    conda config --set auto_activate_base false 
 
-    conda config --system --prepend channels conda-forge 
+    conda config --prepend channels conda-forge 
 
-    conda config --system --set channel_priority strict 
+    conda config --set channel_priority strict 
     
     conda init bash
 
@@ -74,6 +74,20 @@ Before installing or loading cocoa conda environment, type
     conda init
     source ~/.bashrc
 
+When running conda for the first time, use the instructions below to configure the use of channels
+
+    conda config --set auto_update_conda false 
+
+    conda config --set show_channel_urls true 
+
+    conda config --set auto_activate_base false 
+
+    conda config --prepend channels conda-forge 
+
+    conda config --set channel_priority strict 
+    
+    conda init bash
+    
 Users can now go to section [Installation of Cocoa's required packages via conda](#required_packages_conda)
 
 ## Installation of Cocoa's required packages <a name="required_packages"></a>
