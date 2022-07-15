@@ -33,7 +33,6 @@ This readme file presents basic and advanced instructions for installing all [Co
 
 Before installing or loading cocoa conda environment, type
 
-    module load python
     module load anaconda
 
 When running conda for the first time, use the instructions below to configure the use of channels
@@ -49,7 +48,8 @@ When running conda for the first time, use the instructions below to configure t
     conda config --set channel_priority strict 
     
     conda init bash
-    
+
+With this installation method, users must activate anaconda module before working with Cocoa. 
 Users can now go to section [Installation of Cocoa's required packages via conda](#required_packages_conda). 
 
 ### Using Internal Cache <a name="sbu_overview_manual"></a>
@@ -82,14 +82,16 @@ The next step will create the cocoalite Conda environment.
       'conda-forge::git-lfs=3.0.2' \
       'conda-forge::cmake=3.21.3'
 
-With this installation method, users must activate global modules and the CondaLite environment whenever working with Cocoa, as shown below 
+With this installation method, users must activate modules and the `condalite` environment before working with Cocoa, as shown below 
 
     module load anaconda
     module load gcc/11.2.0
     module load openmpi/gcc11.2/4.1.1
     conda activate cocoalite
 
-Users can now proceed to [Via Cocoa's internal cache](#required_packages_cache) section. Note however, we do provide a special key for manual installation on SeaWolf that simplifies the process
+Users can now proceed to [Via Cocoa's internal cache](#required_packages_cache) section. 
+
+(**Warning**) We do provide a special key for SeaWolf that simplifies the installation process via Cocoa's internal cache, as shown below
 
     [Extracted from set_installation_options script] 
     
