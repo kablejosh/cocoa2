@@ -36,9 +36,6 @@ Before installing or loading cocoa conda environment, type
     module load python
     module load anaconda
 
-    conda init
-    source ~/.bashrc
-
 When running conda for the first time, use the instructions below to configure the use of channels
 
     conda config --set auto_update_conda false 
@@ -62,6 +59,22 @@ SeaWulf does not possess python 3.7 installed, but we can use a lite version of 
     module load anaconda
     module load gcc/11.2.0
     module load openmpi/gcc11.2/4.1.1
+
+When running conda for the first time, use the instructions below to configure the use of channels
+
+    conda config --set auto_update_conda false 
+
+    conda config --set show_channel_urls true 
+
+    conda config --set auto_activate_base false 
+
+    conda config --prepend channels conda-forge 
+
+    conda config --set channel_priority strict 
+    
+    conda init bash
+
+The next step will create the cocoalite Conda environment.
 
     conda create --name cocoalite python=3.7 --quiet --yes && \
     conda install -n cocoalite --quiet --yes  \
