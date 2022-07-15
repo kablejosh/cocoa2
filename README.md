@@ -53,7 +53,17 @@ When running conda for the first time, use the instructions below to configure t
     
     conda init bash
     
-Users can now go to section [Installation of Cocoa's required packages via conda](#required_packages_conda)
+Users can now go to section [Installation of Cocoa's required packages via conda](#required_packages_conda). Note however, we do provide a special key for manual installation on SeaWolf that simplifies the process
+
+    [Extracted from set_installation_options script] 
+    
+    #  ---------------------------------------------------------------------------
+    # HOW COCOA BE INSTALLED? -------------------------------
+
+    #export DOCKER_INSTALLATION=1
+    #export MINICONDA_INSTALLATION=1
+    #export MANUAL_INSTALLATION=1
+    export SBU_SUPERCOMPUTER_INSTALLATION=1
 
 ### Using Internal Cache <a name="sbu_overview_manual"></a>
 
