@@ -38,15 +38,10 @@ Before installing or loading cocoa conda environment, type
 When running conda for the first time, use the instructions below to configure the use of channels
 
     conda config --set auto_update_conda false 
-
     conda config --set show_channel_urls true 
-
     conda config --set auto_activate_base false 
-
     conda config --prepend channels conda-forge 
-
     conda config --set channel_priority strict 
-    
     conda init bash
 
 With this installation method, users must activate anaconda module before working with Cocoa. 
@@ -63,15 +58,10 @@ SeaWulf does not possess python 3.7 installed, but we can use a lite version of 
 When running conda for the first time, use the instructions below to configure the use of channels
 
     conda config --set auto_update_conda false 
-
     conda config --set show_channel_urls true 
-
     conda config --set auto_activate_base false 
-
     conda config --prepend channels conda-forge 
-
     conda config --set channel_priority strict 
-    
     conda init bash
 
 The next step will create the cocoalite Conda environment.
