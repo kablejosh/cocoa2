@@ -11,9 +11,9 @@ export ROOTDIR=$PWD
 # HOW COCOA BE INSTALLED? -------------------------------
 
 #export DOCKER_INSTALLATION=1
-export MINICONDA_INSTALLATION=1
+#export MINICONDA_INSTALLATION=1
 #export MANUAL_INSTALLATION=1
-#export SBU_SUPERCOMPUTER_INSTALLATION=1
+export SBU_SUPERCOMPUTER_INSTALLATION=1
 
 # deprecated Keys - will be deleted in the future
 #export AMYPOND_SUPERCOMPUTER_INSTALLATION=1
@@ -158,9 +158,9 @@ elif [ -n "${SBU_SUPERCOMPUTER_INSTALLATION}" ]; then
     #  'conda-forge::git=2.33.1' \
     #  'conda-forge::git-lfs=3.0.2'
     
-    module load cmake/3.17.3
     module load gcc/11.2.0
     module load openmpi/gcc11.2/4.1.1
+    module load cmake/3.17.3
     
     export PYTHON_VERSION=3.7
     
