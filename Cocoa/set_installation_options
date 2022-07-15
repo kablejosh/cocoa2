@@ -13,11 +13,7 @@ export ROOTDIR=$PWD
 #export DOCKER_INSTALLATION=1
 #export MINICONDA_INSTALLATION=1
 #export MANUAL_INSTALLATION=1
-export SBU_SUPERCOMPUTER_INSTALLATION=1
-
-# deprecated Keys - will be deleted in the future
-#export AMYPOND_SUPERCOMPUTER_INSTALLATION=1
-#export PUMA_SUPERCOMPUTER_INSTALLATION=1
+#export SBU_SUPERCOMPUTER_INSTALLATION=1
 
 #IF TRUE USES CLIK FROM https://github.com/benabed/clik
 export USE_SPT_CLIK_PLANCK=1
@@ -87,6 +83,12 @@ if [ -n "${MANUAL_INSTALLATION}" ]; then
     #export IGNORE_OPENBLAS_INSTALLATION=1
     #export IGNORE_FORTRAN_LAPACK_INSTALLATION=1
 
+    if [ -z "${IGNORE_CMAKE_INSTALLATION}" ]; then
+        export CMAKE_ROOT=$ROOTDIR/.local/bin/cmake
+        export CMAKE=$ROOTDIR/.local/bin/cmake
+    else
+        export CMAKE=cmake
+    fi
 elif [ -n "${DOCKER_INSTALLATION}" ]; then
 
     export GLOBAL_PACKAGES_LOCATION=/usr/local
@@ -110,7 +112,13 @@ elif [ -n "${DOCKER_INSTALLATION}" ]; then
     export IGNORE_CPP_SPDLOG_INSTALLATION=1
     export IGNORE_C_INSTALLATION=1
     export IGNORE_FORTRAN_INSTALLATION=1
-    
+
+    if [ -z "${IGNORE_CMAKE_INSTALLATION}" ]; then
+        export CMAKE_ROOT=$ROOTDIR/.local/bin/cmake
+        export CMAKE=$ROOTDIR/.local/bin/cmake
+    else
+        export CMAKE=cmake
+    fi   
 elif [ -n "${MINICONDA_INSTALLATION}" ]; then
 
     export PATH=$CONDA_PREFIX/bin:$PATH
@@ -151,13 +159,21 @@ elif [ -n "${MINICONDA_INSTALLATION}" ]; then
     export IGNORE_FORTRAN_LAPACK_INSTALLATION=1
     export IGNORE_CPP_ARMA_INSTALLATION=1
 
+    if [ -z "${IGNORE_CMAKE_INSTALLATION}" ]; then
+        export CMAKE_ROOT=$ROOTDIR/.local/bin/cmake
+        export CMAKE=$ROOTDIR/.local/bin/cmake
+    else
+        export CMAKE=cmake
+    fi
+
 elif [ -n "${SBU_SUPERCOMPUTER_INSTALLATION}" ]; then    
     # USING COCOA LITE CONDA ENV
     #conda create --name cocoalite python=3.7 --quiet --yes && \
     #conda install -n cocoalite --quiet --yes  \
     #  'conda-forge::git=2.33.1' \
-    #  'conda-forge::git-lfs=3.0.2'
-    
+    #  'conda-forge::git-lfs=3.0.2' \
+    #  'conda-forge::cmake=3.21.3' 
+
     module unload gcc
     module unload openmpi
 
@@ -188,17 +204,16 @@ elif [ -n "${SBU_SUPERCOMPUTER_INSTALLATION}" ]; then
     export MPI_CXX_COMPILER=mpicc
     export MPI_CC_COMPILER=mpicxx
 
+    export CMAKE=$CONDA_PREFIX/bin/cmake
+
+    export CPLUS_INCLUDE_PATH=$ROOTDIR/.local/include:$CPLUS_INCLUDE_PATH
+    export C_INCLUDE_PATH=$ROOTDIR/.local/include:$C_INCLUDE_PATH
+
     export IGNORE_DISTUTILS_INSTALLATION=1
     export IGNORE_XZ_INSTALLATION=1
+    export IGNORE_CMAKE_INSTALLATION=1
 
     ulimit -s unlimited
-fi
-
-if [ -z "${IGNORE_CMAKE_INSTALLATION}" ]; then
-    export CMAKE_ROOT=$ROOTDIR/.local/bin/cmake
-    export CMAKE=$ROOTDIR/.local/bin/cmake
-else
-    export CMAKE=cmake
 fi
 
 if [ -n "${IGNORE_CPP_INSTALLATION}" ]; then
