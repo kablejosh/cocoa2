@@ -60,7 +60,6 @@ if [ -z "${IGNORE_PLANCK_COMPILATION}" ]; then
         echo "PROBLEM CONF PLANCK"
       fi
     else
-      $echo 'what2'
       FC=$FORTRAN_COMPILER CC=$C_COMPILER CXX=$CXX_COMPILER $PYTHON3 waf configure --gcc --gfortran --cfitsio_islocal --prefix $ROOTDIR/.local --lapack_prefix=$GLOBAL_PACKAGES_LOCATION --cfitsio_lib=$ROOTDIR/.local/lib --python=$ROOTDIR/.local/bin/python
       if [ $? -ne 0 ] 
       then
@@ -75,7 +74,6 @@ if [ -z "${IGNORE_PLANCK_COMPILATION}" ]; then
         echo "PROBLEM CONF PLANCK"
       fi
     else
-      $echo 'what2'
       FC=$FORTRAN_COMPILER CC=$C_COMPILER CXX=$CXX_COMPILER $PYTHON3 waf configure --gcc --gfortran --cfitsio_islocal --prefix $ROOTDIR/.local --lapack_prefix=$GLOBAL_PACKAGES_LOCATION --cfitsio_prefix=$GLOBAL_PACKAGES_LOCATION --python=$ROOTDIR/.local/bin/python
       if [ $? -ne 0 ] 
       then
