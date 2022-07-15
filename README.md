@@ -107,27 +107,25 @@ The more straightforward way to install most prerequisites is via [Conda](https:
       'conda-forge::gcc_linux-64=10.3.0' \
       'conda-forge::gfortran_linux-64=10.3.0' \
       'conda-forge::openmpi=4.1.1' \
-      'conda-forge::sysroot_linux-64=2.17' \
       'conda-forge::git=2.33.1' \
       'conda-forge::git-lfs=3.0.2' \
       'conda-forge::hdf5=1.10.6' \
-      'conda-forge::git-lfs=3.0.2' \
       'conda-forge::cmake=3.21.3' \
       'conda-forge::boost=1.76.0' \
       'conda-forge::gsl=2.7' \
       'conda-forge::fftw=3.3.10' \
       'conda-forge::cfitsio=4.0.0' \
-      'conda-forge::openblas=0.3.18' \
+      'conda-forge::openblas=0.3.20' \
       'conda-forge::lapack=3.9.0' \
       'conda-forge::armadillo=10.7.3'\
-      'conda-forge::expat=2.4.1' \
       'conda-forge::cython=0.29.24' \
       'conda-forge::numpy=1.21.4' \
       'conda-forge::scipy=1.7.2' \
       'conda-forge::pandas=1.3.4' \
       'conda-forge::mpi4py=3.1.2' \
       'conda-forge::matplotlib=3.5.0' \
-      'conda-forge::astropy=4.3.1' 
+      'conda-forge::astropy=4.3.1' \
+      'conda-forge::tar'
  
 With this installation method, users must activate the Conda environment whenever working with Cocoa, as shown below 
 
