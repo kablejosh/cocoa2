@@ -1,7 +1,8 @@
 # Table of contents
 1. [Overview of the Cobaya-CosmoLike Joint Architecture (Cocoa)](#overview)
 2. [Special Instructions for the SBU supercomputer](#sbu_overview) 
-    1. [Using module Anaconda](#sbu_overview_anaconda)    
+    1. [Using module Anaconda](#sbu_overview_anaconda)  
+    2. [Using Internal Cache](#sbu_overview_manual)
 3. [Installation of Cocoa's required packages](#required_packages)
     1. [Via Conda (best for Linux)](#required_packages_conda)
     2. [Via Docker (best for MacOS/Windows)](#required_packages_docker)
@@ -28,6 +29,8 @@ This readme file presents basic and advanced instructions for installing all [Co
 
 ## Special Instructions for the SBU supercomputer <a name="sbu_overview"></a>
 
+### Using module Anaconda <a name="sbu_overview_anaconda"></a>
+
 Before installing or loading cocoa conda environment, type
 
     module load python
@@ -50,8 +53,34 @@ When running conda for the first time, use the instructions below to configure t
     
     conda init bash
     
-Users can now go to section [Installation of Cocoa's required packages via conda](#required_packages_conda)
+Users can now go to section [Installation of Cocoa's required packages via conda](#required_packages_conda). 
 
+### Using Internal Cache <a name="sbu_overview_manual"></a>
+
+SeaWulf does not possess python 3.7 installed, but we can use a lite version of cocoa conda environment instead
+
+    conda create --name cocoalite python=3.7 --quiet --yes && \
+    conda install -n cocoalite --quiet --yes  \
+      'conda-forge::git=2.33.1' \
+      'conda-forge::git-lfs=3.0.2' \
+      'conda-forge::cmake=3.21.3'
+
+With this installation method, users must activate the CondaLite environment whenever working with Cocoa, as shown below 
+
+    $ conda activate cocoalite
+
+Users can now proceed to [Via Cocoa's internal cache](#required_packages_cache) section. Note however, we do provide a special key for manual installation on SeaWolf that simplifies the process
+
+    [Extracted from set_installation_options script] 
+    
+    #  ---------------------------------------------------------------------------
+    # HOW COCOA BE INSTALLED? -------------------------------
+
+    #export DOCKER_INSTALLATION=1
+    #export MINICONDA_INSTALLATION=1
+    #export MANUAL_INSTALLATION=1
+    export SBU_SUPERCOMPUTER_INSTALLATION=1
+    
 ## Installation of Cocoa's required packages <a name="required_packages"></a>
 
 [CosmoLike](https://github.com/CosmoLike) and [Cobaya](https://github.com/CobayaSampler) require many C, C++ and Python packages to be installed as prerequisites. The overabundance of compiler and package versions, each with a different set of bugs and regressions, complicate the installation of Cocoa in HPC environments and the verification of numerical results. This section standardize the package environment.
