@@ -57,7 +57,7 @@ Users can now go to section [Installation of Cocoa's required packages via conda
 
 ### Using Internal Cache <a name="sbu_overview_manual"></a>
 
-SeaWulf does not posses python 3.7 installed, but we can use a lite version of cocoa conda environment instead
+SeaWulf does not possess python 3.7 installed, but we can use a lite version of cocoa conda environment instead
 
     conda create --name cocoalite python=3.7 --quiet --yes && \
     conda install -n cocoalite --quiet --yes  \
