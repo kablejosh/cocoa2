@@ -71,10 +71,10 @@ SeaWulf does not possess python 3.7 installed, but we can use a lite version of 
 
 With this installation method, users must activate global modules and the CondaLite environment whenever working with Cocoa, as shown below 
 
-    $ module load anaconda
-    $ module load gcc/11.2.0
-    $ module load openmpi/gcc11.2/4.1.1
-    $ conda activate cocoalite
+    module load anaconda
+    module load gcc/11.2.0
+    module load openmpi/gcc11.2/4.1.1
+    conda activate cocoalite
 
 Users can now proceed to [Via Cocoa's internal cache](#required_packages_cache) section. Note however, we do provide a special key for manual installation on SeaWolf that simplifies the process
 
