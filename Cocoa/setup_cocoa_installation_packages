@@ -136,12 +136,6 @@ echo "FAILED setup_pip_packages SCRIPT" >&2
 return 1
 fi
 
-export NUMPY_HEADERS=$ROOTDIR/.local/lib/python$PYTHON_VERSION/site-packages/numpy/core/include
-
-addvar LD_LIBRARY_PATH $ROOTDIR/.local/lib/python$PYTHON_VERSION/site-packages/numpy/core/lib
-
-export CPATH=$CPATH:$ROOTDIR/.local/lib/python$PYTHON_VERSION/site-packages/numpy/core/include
-
 source ./installation_scripts/setup_fortran_packages
 if [ $? -ne 0 ] 
 then
@@ -162,6 +156,12 @@ then
 echo "FAILED setup_c_packages SCRIPT" >&2
 return 1
 fi
+
+export NUMPY_HEADERS=$ROOTDIR/.local/lib/python$PYTHON_VERSION/site-packages/numpy/core/include
+
+addvar LD_LIBRARY_PATH $ROOTDIR/.local/lib/python$PYTHON_VERSION/site-packages/numpy/core/lib
+
+export CPATH=$CPATH:$ROOTDIR/.local/lib/python$PYTHON_VERSION/site-packages/numpy/core/include
 
 # ----------------------------------------------------------------------------
 # ----------------------------------------------------------------------------
