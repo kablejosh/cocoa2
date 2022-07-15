@@ -53,17 +53,7 @@ When running conda for the first time, use the instructions below to configure t
     
     conda init bash
     
-Users can now go to section [Installation of Cocoa's required packages via conda](#required_packages_conda). Note however, we do provide a special key for manual installation on SeaWolf that simplifies the process
-
-    [Extracted from set_installation_options script] 
-    
-    #  ---------------------------------------------------------------------------
-    # HOW COCOA BE INSTALLED? -------------------------------
-
-    #export DOCKER_INSTALLATION=1
-    #export MINICONDA_INSTALLATION=1
-    #export MANUAL_INSTALLATION=1
-    export SBU_SUPERCOMPUTER_INSTALLATION=1
+Users can now go to section [Installation of Cocoa's required packages via conda](#required_packages_conda). 
 
 ### Using Internal Cache <a name="sbu_overview_manual"></a>
 
@@ -79,7 +69,17 @@ With this installation method, users must activate the CondaLite environment whe
 
     $ conda activate cocoalite
 
-Users can now proceed to [Via Cocoa's internal cache](#required_packages_cache) section.
+Users can now proceed to [Via Cocoa's internal cache](#required_packages_cache) section. Note however, we do provide a special key for manual installation on SeaWolf that simplifies the process
+
+    [Extracted from set_installation_options script] 
+    
+    #  ---------------------------------------------------------------------------
+    # HOW COCOA BE INSTALLED? -------------------------------
+
+    #export DOCKER_INSTALLATION=1
+    #export MINICONDA_INSTALLATION=1
+    #export MANUAL_INSTALLATION=1
+    export SBU_SUPERCOMPUTER_INSTALLATION=1
     
 ## Installation of Cocoa's required packages <a name="required_packages"></a>
 
