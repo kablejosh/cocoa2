@@ -1,8 +1,7 @@
 # Table of contents
 1. [Overview of the Cobaya-CosmoLike Joint Architecture (Cocoa)](#overview)
 2. [Special Instructions for the SBU supercomputer](#sbu_overview) 
-    1. [Installing Miniconda](#sbu_overview_conda) 
-    2. [Using module Anaconda](#sbu_overview_anaconda)    
+    1. [Using module Anaconda](#sbu_overview_anaconda)    
 3. [Installation of Cocoa's required packages](#required_packages)
     1. [Via Conda (best for Linux)](#required_packages_conda)
     2. [Via Docker (best for MacOS/Windows)](#required_packages_docker)
@@ -21,50 +20,13 @@
  
 ## Overview of the [Cobaya](https://github.com/CobayaSampler)-[CosmoLike](https://github.com/CosmoLike) Joint Architecture (Cocoa) <a name="overview"></a>
 
-Cocoa allows users to run [CosmoLike](https://github.com/CosmoLike) routines inside the [Cobaya](https://github.com/CobayaSampler) framework. Cosmolike can analyze data primarily from the [Dark Energy Survey](https://www.darkenergysurvey.org) (a.k.a DES) and simulate future multi-probe analyses for Rubin Observatory's Legacy Survey of Space and Time or the Roman Space Telescope. Besides integrating [Cobaya](https://github.com/CobayaSampler) and [CosmoLike](https://github.com/CosmoLike), this project introduces shell scripts and readme instructions that direct users to "containerize" [Cobaya](https://github.com/CobayaSampler) instances. The container structure made possible by our shell scripts ensures two things: (1) everyone will run the code with the same compiler, packages, and libraries (2) the user can use multiple [Cobaya](https://github.com/CobayaSampler) instances consistently. This readme file presents basic and advanced instructions for installing all [Cobaya](https://github.com/CobayaSampler) components, including the [Planck likelihood](https://wiki.cosmos.esa.int/planck-legacy-archive/index.php/Main_Page).
+Cocoa allows users to run [CosmoLike](https://github.com/CosmoLike) routines inside the [Cobaya](https://github.com/CobayaSampler) framework. [CosmoLike](https://github.com/CosmoLike) can analyze data primarily from the [Dark Energy Survey](https://www.darkenergysurvey.org) and simulate future multi-probe analyses for LSST and Roman. Besides integrating [Cobaya](https://github.com/CobayaSampler) and [CosmoLike](https://github.com/CosmoLike), this project introduces shell scripts and readme instructions that allow users to containerize [Cobaya](https://github.com/CobayaSampler). The container structure ensures that: 
+1. Users will adopt the same compiler and libraries (including their versions). 
+2. Users will be able to use multiple [Cobaya](https://github.com/CobayaSampler) instances consistently. 
 
-(**expert**) Why go to such lengths to containerize [Cobaya](https://github.com/CobayaSampler)? While the command `pip install cobaya --upgrade` from the default [Cobaya](https://github.com/CobayaSampler) instructions is undeniably a more straightforward installation method for beginners, we found that having multiple instances of [Cobaya](https://github.com/CobayaSampler) is better in the context of our projects (we do modify CAMB, CLASS and many likelihood codes extensively). For example, while users may run chains in one instance, many tweaks and changes to the code can be tested (or a different modified CAMB can be linked) in another [Cobaya](https://github.com/CobayaSampler) installation. The consistent use of compilers, packages, and libraries helps debugging and installation (we run code in many different HPC environments).
+This readme file presents basic and advanced instructions for installing all [Cobaya](https://github.com/CobayaSampler) and [CosmoLike](https://github.com/CosmoLike) components.
 
 ## Special Instructions for the SBU supercomputer <a name="sbu_overview"></a>
-
-## Installing Miniconda <a name="sbu_overview_conda"></a>
-
-Download and run Miniconda installation script (please adapt `CONDA_DIR`):
-
-    export CONDA_DIR=/gpfs/home/vinmirandabr/miniconda
-
-    mkdir $CONDA_DIR
-
-    wget https://repo.continuum.io/miniconda/Miniconda3-py37_4.8.3-Linux-x86_64.sh
-
-    /bin/bash Miniconda3-py37_4.8.3-Linux-x86_64.sh -f -b -p $CONDA_DIR
-
-After installation, users must source conda configuration file, see the line below (add such line to your $.bashrc$ file)
-
-    source $CONDA_DIR/etc/profile.d/conda.sh
-
-(**warning**) The following lines must be added to user's bashrc so conda can work at every login
-
-    export CONDA_DIR=/gpfs/home/vinmirandabr/miniconda
-    source $CONDA_DIR/etc/profile.d/conda.sh
-
-please restart the ssh session so that the changes in `~/.bashrc` have an effect.
-
-When running conda for the first time, use the instructions below to configure the use of channels
-
-    conda config --set auto_update_conda false 
-
-    conda config --set show_channel_urls true 
-
-    conda config --set auto_activate_base false 
-
-    conda config --prepend channels conda-forge 
-
-    conda config --set channel_priority strict 
-    
-    conda init bash
-
-## Using module Anaconda <a name="sbu_overview_anaconda"></a>
 
 Before installing or loading cocoa conda environment, type
 
@@ -92,7 +54,13 @@ Users can now go to section [Installation of Cocoa's required packages via conda
 
 ## Installation of Cocoa's required packages <a name="required_packages"></a>
 
-Cosmolike, including the interface between Cosmolike and Cobaya, requires some C, C++ and Python packages to be installed. These packages include [GSL](https://www.gnu.org/software/gsl/), [FFTW](https://www.fftw.org), [Armadillo](http://arma.sourceforge.net), [Pybind11](https://pybind11.readthedocs.io/en/stable/) and [Boost](https://www.boost.org). In addition, Planck likelihood requires [CFITSIO](https://heasarc.gsfc.nasa.gov/fitsio/), and Cobaya requires many additional Python packages. The overabundance of compiler and package versions, each one with a different set of bugs and regressions, can make the installation of any big code (and the verification of numerical results) to be pure agony. This section tries to simplify installation, and more importantly, **standardize the package environment** adopted by Cocoa.
+[CosmoLike](https://github.com/CosmoLike) and [Cobaya](https://github.com/CobayaSampler) require many C, C++ and Python packages to be installed as prerequisites. The overabundance of compiler and package versions, each with a different set of bugs and regressions, complicate the installation of Cocoa in HPC environments and the verification of numerical results. This section standardize the package environment.
+
+There are three installation methods. Users must choose one of them:
+
+1. [Via Conda](#required_packages_conda) (best for Linux)
+2. [Via Docker](#required_packages_docker) (best for MacOS/Windows)
+3. [Via Cocoa's internal cache](#required_packages_cache) (This method is slow, not advisable)
 
 ### Via Conda (best for Linux/HPC) <a name="required_packages_conda"></a>
 
