@@ -16,8 +16,8 @@
     1. [Compiling Boltzmann, CosmoLike and Likelihood codes separatelly](#appendix_compile_separatelly)
     2. [Running Jupyter Notebooks inside the Whovian-Cosmo docker container](#appendix_jupyter_whovian)
     3. [Summary Information about Cocoa's configuration files](#appendix_config_files)
-9. [The projects folder (external readme)](https://github.com/CosmoLike/cocoa/tree/main/Cocoa/projects)
-10. [Adapting new modified CAMB/CLASS (external readme)](https://github.com/CosmoLike/cocoa/tree/main/Cocoa/external_modules/code)
+9. [The projects folder (external readme)](https://github.com/SBU-UNESP-2022-COCOA/cocoa2/tree/main/Cocoa/projects)
+10. [Adapting new modified CAMB/CLASS (external readme)](https://github.com/SBU-UNESP-2022-COCOA/cocoa2/tree/main/Cocoa/external_modules/code)
  
 ## Overview of the [Cobaya](https://github.com/CobayaSampler)-[CosmoLike](https://github.com/CosmoLike) Joint Architecture (Cocoa) <a name="overview"></a>
 
