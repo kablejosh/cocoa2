@@ -16,8 +16,8 @@
     1. [Compiling Boltzmann, CosmoLike and Likelihood codes separatelly](#appendix_compile_separatelly)
     2. [Running Jupyter Notebooks inside the Whovian-Cosmo docker container](#appendix_jupyter_whovian)
     3. [Summary Information about Cocoa's configuration files](#appendix_config_files)
-9. [The projects folder (external readme)](https://github.com/CosmoLike/cocoa/tree/main/Cocoa/projects)
-10. [Adapting new modified CAMB/CLASS (external readme)](https://github.com/CosmoLike/cocoa/tree/main/Cocoa/external_modules/code)
+9. [The projects folder (external readme)](https://github.com/SBU-UNESP-2022-COCOA/cocoa2/tree/main/Cocoa/projects)
+10. [Adapting new modified CAMB/CLASS (external readme)](https://github.com/SBU-UNESP-2022-COCOA/cocoa2/tree/main/Cocoa/external_modules/code)
  
 ## Overview of the [Cobaya](https://github.com/CobayaSampler)-[CosmoLike](https://github.com/CosmoLike) Joint Architecture (Cocoa) <a name="overview"></a>
 
@@ -33,31 +33,38 @@ This readme file presents basic and advanced instructions for installing all [Co
 
 Before installing or loading cocoa conda environment, type
 
-    module load python
     module load anaconda
-
-    conda init
-    source ~/.bashrc
 
 When running conda for the first time, use the instructions below to configure the use of channels
 
     conda config --set auto_update_conda false 
-
     conda config --set show_channel_urls true 
-
     conda config --set auto_activate_base false 
-
     conda config --prepend channels conda-forge 
-
     conda config --set channel_priority strict 
-    
     conda init bash
-    
+
+With this installation method, users must activate anaconda module before working with Cocoa. 
 Users can now go to section [Installation of Cocoa's required packages via conda](#required_packages_conda). 
 
 ### Using Internal Cache <a name="sbu_overview_manual"></a>
 
 SeaWulf does not possess python 3.7 installed, but we can use a lite version of cocoa conda environment instead
+
+    module load anaconda
+    module load gcc/11.2.0
+    module load openmpi/gcc11.2/4.1.1
+
+When running conda for the first time, use the instructions below to configure the use of channels
+
+    conda config --set auto_update_conda false 
+    conda config --set show_channel_urls true 
+    conda config --set auto_activate_base false 
+    conda config --prepend channels conda-forge 
+    conda config --set channel_priority strict 
+    conda init bash
+
+The next step will create the cocoalite Conda environment.
 
     conda create --name cocoalite python=3.7 --quiet --yes && \
     conda install -n cocoalite --quiet --yes  \
@@ -65,14 +72,16 @@ SeaWulf does not possess python 3.7 installed, but we can use a lite version of 
       'conda-forge::git-lfs=3.0.2' \
       'conda-forge::cmake=3.21.3'
 
-With this installation method, users must activate global modules and the CondaLite environment whenever working with Cocoa, as shown below 
+With this installation method, users must activate modules and the `condalite` environment before working with Cocoa, as shown below 
 
-    $ module load anaconda
-    $ module load gcc/11.2.0
-    $ module load openmpi/gcc11.2/4.1.1
-    $ conda activate cocoalite
+    module load anaconda
+    module load gcc/11.2.0
+    module load openmpi/gcc11.2/4.1.1
+    conda activate cocoalite
 
-Users can now proceed to [Via Cocoa's internal cache](#required_packages_cache) section. Note however, we do provide a special key for manual installation on SeaWolf that simplifies the process
+Users can now proceed to [Via Cocoa's internal cache](#required_packages_cache) section. 
+
+(**Warning**) We do provide a special key for SeaWolf that simplifies the installation process via Cocoa's internal cache, as shown below
 
     [Extracted from set_installation_options script] 
     
@@ -125,7 +134,6 @@ The more straightforward way to install most prerequisites is via [Conda](https:
       'conda-forge::mpi4py=3.1.2' \
       'conda-forge::matplotlib=3.5.0' \
       'conda-forge::astropy=4.3.1' \
-      'conda-forge::tar'
  
 With this installation method, users must activate the Conda environment whenever working with Cocoa, as shown below 
 
