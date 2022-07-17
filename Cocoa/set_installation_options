@@ -28,7 +28,7 @@ export USE_SPT_CLIK_PLANCK=1
 # SETUP_REQUIRED_PACKAGES SCRIPT MAY TAKE A LONG TIME - THREADING W/ 8 CORES
 
 export THREAD_UNXZ=1
-export MAKE_NUM_THREADS=4
+export MAKE_NUM_THREADS=7
 
 # ----------------------------------------------------------------------------
 # CONTROL OVER EXTERNAL CODES ON SETUP_COCOA SCRIPT -------------------------
@@ -122,14 +122,15 @@ elif [ -n "${DOCKER_INSTALLATION}" ]; then
 elif [ -n "${MINICONDA_INSTALLATION}" ]; then
 
     export PATH=$CONDA_PREFIX/bin:$PATH
-    export LD_LIBRARY_PATH=$CONDA_PREFIX/lib:$LD_LIBRARY_PATH
+    
     export LDFLAGS="-L$CONDA_PREFIX/lib":$LDFLAGS
-    
-    export CPLUS_INCLUDE_PATH=$CONDA_PREFIX/include/python3.7m/:$CPLUS_INCLUDE_PATH
-    export C_INCLUDE_PATH=$CONDA_PREFIX/include/python3.7m/:$C_INCLUDE_PATH
-    
-    export CPLUS_INCLUDE_PATH=$CONDA_PREFIX/lib/python3.7/site-packages/numpy/core/include/:$CPLUS_INCLUDE_PATH
-    export C_INCLUDE_PATH=$CONDA_PREFIX/lib/python3.7/site-packages/numpy/core/include:$C_INCLUDE_PATH
+
+    export CPLUS_INCLUDE_PATH=$CONDA_PREFIX/include/python${PYTHON_VERSION}m/:$CPLUS_INCLUDE_PATH
+    export C_INCLUDE_PATH=$CONDA_PREFIX/include/python${PYTHON_VERSION}m/:$C_INCLUDE_PATH
+    export CPLUS_INCLUDE_PATH=$CONDA_PREFIX/lib/python${PYTHON_VERSION}/site-packages/numpy/core/include/:$CPLUS_INCLUDE_PATH
+    export C_INCLUDE_PATH=$CONDA_PREFIX/lib/python${PYTHON_VERSION}/site-packages/numpy/core/include:$C_INCLUDE_PATH
+    export CPLUS_INCLUDE_PATH=$CONDA_PREFIX/include:$CPLUS_INCLUDE_PATH
+    export C_INCLUDE_PATH=$CONDA_PREFIX/include:$C_INCLUDE_PATH
 
     export GLOBALPYTHON3=$CONDA_PREFIX/bin/python3.7
     export GLOBAL_PACKAGES_LOCATION=$CONDA_PREFIX
@@ -137,6 +138,28 @@ elif [ -n "${MINICONDA_INSTALLATION}" ]; then
     export PYTHON_VERSION=3.7
     export PYTHONPATH=$CONDA_PREFIX/lib/python$PYTHON_VERSION/site-packages:$PYTHONPATH
     export PYTHONPATH=$CONDA_PREFIX/lib:$PYTHONPATH
+    
+    # This causes errors on SeaWulf
+    #export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$CONDA_PREFIX/lib
+
+    export LD_RUN_PATH=$CONDA_PREFIX/lib/python$PYTHON_VERSION/site-packages:$LD_RUN_PATH
+    export LD_RUN_PATH=$CONDA_PREFIX/lib:$LD_RUN_PATH
+    
+    export LIBRARY_PATH=$LIBRARY_PATH:$CONDA_PREFIX/lib/python$PYTHON_VERSION/site-packages
+    export LIBRARY_PATH=$LIBRARY_PATH:$CONDA_PREFIX/lib
+
+    export CMAKE_INCLUDE_PATH=$CONDA_PREFIX/include/python${PYTHON_VERSION}m/:$CMAKE_INCLUDE_PATH
+    export CMAKE_INCLUDE_PATH=$CONDA_PREFIX/include/:$CMAKE_INCLUDE_PATH    
+    export CMAKE_LIBRARY_PATH=$CONDA_PREFIX/lib/python$PYTHON_VERSION/site-packages:$CMAKE_LIBRARY_PATH
+    export CMAKE_LIBRARY_PATH=$CONDA_PREFIX/lib:$CMAKE_LIBRARY_PATH
+
+    export INCLUDE_PATH=$CONDA_PREFIX/include/:$INCLUDE_PATH
+    export INCLUDEPATH=$CONDA_PREFIX/include/:$INCLUDEPATH
+    export INCLUDE=$CONDA_PREFIX/include/:$INCLUDE
+    export CPATH=$CONDA_PREFIX/include/:$CPATH
+
+    export OBJC_INCLUDE_PATH=$CONDA_PREFIX/include/:OBJC_INCLUDE_PATH
+    export OBJC_PATH=$CONDA_PREFIX/include/:OBJC_PATH
 
     ulimit -s unlimited
 
