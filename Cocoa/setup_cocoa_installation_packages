@@ -147,7 +147,7 @@ export OBJC_PATH=$ROOTDIR/.local/:OBJC_PATH
 # ----------------------------------------------------------------------------
 # ----------------------------------------------------------------------------
 
-#source ./installation_scripts/setup_xz
+source ./installation_scripts/setup_xz
 if [ $? -ne 0 ] 
 then
 echo "FAILED setup_xz SCRIPT" >&2
