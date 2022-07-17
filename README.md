@@ -1,8 +1,7 @@
 # Table of contents
 1. [Overview of the Cobaya-CosmoLike Joint Architecture (Cocoa)](#overview)
 2. [Special Instructions for the SBU supercomputer](#sbu_overview) 
-    1. [Using module Anaconda](#sbu_overview_anaconda)  
-    2. [Using Internal Cache](#sbu_overview_manual)
+    1. [Using Miniconda](#sbu_overview_anaconda)  
 3. [Installation of Cocoa's required packages](#required_packages)
     1. [Via Conda (best for Linux)](#required_packages_conda)
     2. [Via Docker (best for MacOS/Windows)](#required_packages_docker)
@@ -29,13 +28,23 @@ This readme file presents basic and advanced instructions for installing all [Co
 
 ## Special Instructions for the SBU supercomputer <a name="sbu_overview"></a>
 
-### Using module Anaconda <a name="sbu_overview_anaconda"></a>
+### Using Miniconda <a name="sbu_overview_anaconda"></a>
 
-Before installing or loading cocoa conda environment, type
+Download and run Miniconda installation script (please adapt `CONDA_DIR`):
 
-    module load anaconda
+    export CONDA_DIR=/gpfs/home/vinmirandabr/miniconda
 
-When running conda for the first time, use the instructions below to configure the use of channels
+    mkdir $CONDA_DIR
+
+    wget https://repo.continuum.io/miniconda/Miniconda3-py37_4.8.3-Linux-x86_64.sh
+
+    /bin/bash Miniconda3-py37_4.8.3-Linux-x86_64.sh -f -b -p $CONDA_DIR
+
+After installation, users must source conda configuration file, see the line below (add such line to your $.bashrc$ file)
+
+    source $CONDA_DIR/etc/profile.d/conda.sh
+
+(**warning**) When running conda for the first time, use the instructions below to configure the use of channels
 
     conda config --set auto_update_conda false 
     conda config --set show_channel_urls true 
@@ -47,52 +56,10 @@ When running conda for the first time, use the instructions below to configure t
 With this installation method, users must activate anaconda module before working with Cocoa. 
 Users can now go to section [Installation of Cocoa's required packages via conda](#required_packages_conda). 
 
-### Using Internal Cache <a name="sbu_overview_manual"></a>
+(**warning**) Make sure you don't have system anaconda loaded via the command 
 
-SeaWulf does not possess python 3.7 installed, but we can use a lite version of cocoa conda environment instead
+    module unload anaconda
 
-    module load anaconda
-    module load gcc/11.2.0
-    module load openmpi/gcc11.2/4.1.1
-
-When running conda for the first time, use the instructions below to configure the use of channels
-
-    conda config --set auto_update_conda false 
-    conda config --set show_channel_urls true 
-    conda config --set auto_activate_base false 
-    conda config --prepend channels conda-forge 
-    conda config --set channel_priority strict 
-    conda init bash
-
-The next step will create the cocoalite Conda environment.
-
-    conda create --name cocoalite python=3.7 --quiet --yes && \
-    conda install -n cocoalite --quiet --yes  \
-      'conda-forge::git=2.33.1' \
-      'conda-forge::git-lfs=3.0.2' \
-      'conda-forge::cmake=3.21.3'
-
-With this installation method, users must activate modules and the `condalite` environment before working with Cocoa, as shown below 
-
-    module load anaconda
-    module load gcc/11.2.0
-    module load openmpi/gcc11.2/4.1.1
-    conda activate cocoalite
-
-Users can now proceed to [Via Cocoa's internal cache](#required_packages_cache) section. 
-
-(**Warning**) We do provide a special key for SeaWolf that simplifies the installation process via Cocoa's internal cache, as shown below
-
-    [Extracted from set_installation_options script] 
-    
-    #  ---------------------------------------------------------------------------
-    # HOW COCOA BE INSTALLED? -------------------------------
-
-    #export DOCKER_INSTALLATION=1
-    #export MINICONDA_INSTALLATION=1
-    #export MANUAL_INSTALLATION=1
-    export SBU_SUPERCOMPUTER_INSTALLATION=1
-    
 ## Installation of Cocoa's required packages <a name="required_packages"></a>
 
 [CosmoLike](https://github.com/CosmoLike) and [Cobaya](https://github.com/CobayaSampler) require many C, C++ and Python packages to be installed as prerequisites. The overabundance of compiler and package versions, each with a different set of bugs and regressions, complicate the installation of Cocoa in HPC environments and the verification of numerical results. This section standardize the package environment.
