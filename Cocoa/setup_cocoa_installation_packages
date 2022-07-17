@@ -154,7 +154,7 @@ echo "FAILED setup_xz SCRIPT" >&2
 return 1
 fi
 
-#source ./installation_scripts/setup_decompress_files
+source ./installation_scripts/setup_decompress_files
 if [ $? -ne 0 ] 
 then
 echo "FAILED setup_decompress_files SCRIPT" >&2
