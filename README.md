@@ -52,13 +52,12 @@ After installation, users must source conda configuration file, see the line bel
     conda config --prepend channels conda-forge 
     conda config --set channel_priority strict 
     conda init bash
-
-With this installation method, users must activate anaconda module before working with Cocoa. 
-Users can now go to section [Installation of Cocoa's required packages via conda](#required_packages_conda). 
-
+    
 (**warning**) Make sure you don't have system anaconda loaded via the command 
 
     module unload anaconda
+
+Users can now go to section [Installation of Cocoa's required packages via conda](#required_packages_conda). 
 
 ## Installation of Cocoa's required packages <a name="required_packages"></a>
 
