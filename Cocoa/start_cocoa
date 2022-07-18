@@ -8,6 +8,14 @@ fi
 # ----------------------------------------------------------------------------
 # ----------------------------------------------------------------------------
 
+function addvar () {
+    local tmp="${!1}" ;
+    tmp="${tmp//:${2}:/:}" ;
+    tmp="${tmp/#${2}:/}" ;
+    tmp="${tmp/%:${2}/}" ;
+    export $1="${2}:${tmp}" ;
+}
+
 if [ -n "${OMP_NUM_THREADS}" ]; then
     export OLD_OMP_NUM_THREADS=$OMP_NUM_THREADS
 fi
@@ -106,6 +114,10 @@ export PYTHONPATH=$ROOTDIR/.local/lib:$PYTHONPATH
 
 export C_INCLUDE_PATH=$C_INCLUDE_PATH:$ROOTDIR/.local/lib/python$PYTHON_VERSION/site-packages/numpy/core/include
 export CPLUS_INCLUDE_PATH=$CPLUS_INCLUDE_PATH:$ROOTDIR/.local/lib/python$PYTHON_VERSION/site-packages/numpy/core/include
+
+export NUMPY_HEADERS=$ROOTDIR/.local/lib/python$PYTHON_VERSION/site-packages/numpy/core/include
+export LD_LIBRARY_PATH=$ROOTDIR/.local/lib/python$PYTHON_VERSION/site-packages/numpy/core/lib:$LD_LIBRARY_PATH
+export CPATH=$CPATH:$ROOTDIR/.local/lib/python$PYTHON_VERSION/site-packages/numpy/core/include
 
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$ROOTDIR/.local/lib
 export LDFLAGS="-L$ROOTDIR/.local/lib":$LDFLAGS
