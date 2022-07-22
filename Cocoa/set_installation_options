@@ -127,8 +127,10 @@ elif [ -n "${MINICONDA_INSTALLATION}" ]; then
 
     export CPLUS_INCLUDE_PATH=$CONDA_PREFIX/include/python${PYTHON_VERSION}m/:$CPLUS_INCLUDE_PATH
     export C_INCLUDE_PATH=$CONDA_PREFIX/include/python${PYTHON_VERSION}m/:$C_INCLUDE_PATH
+    
     export CPLUS_INCLUDE_PATH=$CONDA_PREFIX/lib/python${PYTHON_VERSION}/site-packages/numpy/core/include/:$CPLUS_INCLUDE_PATH
     export C_INCLUDE_PATH=$CONDA_PREFIX/lib/python${PYTHON_VERSION}/site-packages/numpy/core/include:$C_INCLUDE_PATH
+    
     export CPLUS_INCLUDE_PATH=$CONDA_PREFIX/include:$CPLUS_INCLUDE_PATH
     export C_INCLUDE_PATH=$CONDA_PREFIX/include:$C_INCLUDE_PATH
 

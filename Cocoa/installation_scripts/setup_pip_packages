@@ -169,7 +169,8 @@ if [ -z "${IGNORE_ALL_PIP_INSTALLATION}" ]; then
     return 1
   fi
 
-  env CXX=$CXX_COMPILER CC=$C_COMPILER $PIP3 install numpy --upgrade --prefix=$ROOTDIR/.local --find-links file:$ROOTDIR/../cocoa_installation_libraries/pip_cache --no-index > /dev/null 2> /dev/null
+  # --force-reinstall install numpy on .local - help carma to see the files
+  env CXX=$CXX_COMPILER CC=$C_COMPILER $PIP3 install numpy --upgrade --prefix=$ROOTDIR/.local --find-links file:$ROOTDIR/../cocoa_installation_libraries/pip_cache --no-index --force-reinstall > /dev/null 2> /dev/null
 
   env CXX=$CXX_COMPILER CC=$C_COMPILER $PIP3 install mpmath --upgrade --prefix=$ROOTDIR/.local --find-links file:$ROOTDIR/../cocoa_installation_libraries/pip_cache --no-index > /dev/null 2> /dev/null
   if [ $? -ne 0 ]; then

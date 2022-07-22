@@ -3436,7 +3436,8 @@
         tau_star = State2%TimeOfz(State2%ThermoData%z_star) ! conformal time of decoupling in w_const model
         dlsb_eq = State2%TimeOfz(redshift)-tau_star ! distance to last scattering in w_const model
         error = 1.d0 - dlsb_eq/dlsb ! shooting error
-        if (abs(error) <= 1d-7) exit ! will only exit the loop when the error hits this treshold
+        !if (abs(error) <= 1d-7) exit ! will only exit the loop when the error hits this treshold
+        if (abs(error) <= 5d-2) exit ! will only exit the loop when the error hits this treshold
         ! if error > 0, this means that our w_const model has a distance smaller than what we wanted
         ! thus, we need to decrease w to make the universe expand faster (because smaller w accelerates the expansion)
         w_lam = w_lam*(1+error)**10.d0 ! adjusting w by a factor
