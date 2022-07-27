@@ -19,10 +19,10 @@ module MultiFluidDE
     ! JVR - TODO go back to a parameter array
     ! JVR - model parameters
     real(dl) :: w0, wa ! CPL parameters
-    real(dl) :: w1, w2, w3, w4, w5, z1, z2, z3, z4, z5 ! Binned w
+    real(dl) :: w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, z1, z2, z3, z4, z5, z6, z7, z8, z9, z10 ! Binned w
     real(dl) :: zc, fde_zc, theta_i, wn ! Fluid EDE parameters
     real(dl) :: n, grhonode_zc, freq ! Fluid EDE internal parameters
-    real(dl) :: fac1, fac2, fac3, fac4, fac5 ! Binned w factors
+    real(dl) :: fac1, fac2, fac3, fac4, fac5, fac6, fac7, fac8, fac9, fac10 ! Binned w factors
   contains
   procedure :: Init => TMultiFluidDE_Init
   procedure :: w_de => TMultiFluidDE_w_de
@@ -91,6 +91,32 @@ module MultiFluidDE
             w_de(i) = this%w4
           else
             w_de(i) = this%w5
+          end if
+        else if (this%models(i) == 5) then
+          ! Binned w model, 10 bins
+          z = 1._dl/a - 1._dl
+          if (z < this%z1) then
+            w_de(i) = this%w0
+          else if (z < this%z2) then
+            w_de(i) = this%w1
+          else if (z < this%z3) then
+            w_de(i) = this%w2
+          else if (z < this%z4) then
+            w_de(i) = this%w3
+          else if (z < this%z5) then
+            w_de(i) = this%w4
+          else if (z < this%z6) then
+            w_de(i) = this%w5
+          else if (z < this%z7) then
+            w_de(i) = this%w6
+          else if (z < this%z8) then
+            w_de(i) = this%w7
+          else if (z < this%z9) then
+            w_de(i) = this%w8
+          else if (z < this%z10) then
+            w_de(i) = this%w9
+          else
+            w_de(i) = this%w10
           end if
         else
           stop "[Multifluid DE] Invalid dark energy model for fluid 1"
@@ -172,6 +198,32 @@ module MultiFluidDE
           else
             grho_de(i) = grho_late_today * this%fac5 * (a * (1+this%z5))**(-3*(1 + this%w5))
           end if
+        else if (this%models(i) == 5) then
+          ! Binned w model, 10 bins
+          z = 1._dl/a - 1
+          if (z < this%z1) then
+            grho_de(i) = grho_late_today * a**(-3*(1 + this%w0))
+          else if (z < this%z2) then
+            grho_de(i) = grho_late_today * this%fac1 * (a * (1+this%z1))**(-3*(1 + this%w1)) ! See fac1, fac2 and fac3 on init
+          else if (z < this%z3) then
+            grho_de(i) = grho_late_today * this%fac2 * (a * (1+this%z2))**(-3*(1 + this%w2)) ! They are the necessary factors to make grho_de continuous
+          else if (z < this%z4) then
+            grho_de(i) = grho_late_today * this%fac3 * (a * (1+this%z3))**(-3*(1 + this%w3))
+          else if (z < this%z5) then
+            grho_de(i) = grho_late_today * this%fac4 * (a * (1+this%z4))**(-3*(1 + this%w4))
+          else if (z < this%z6) then
+            grho_de(i) = grho_late_today * this%fac5 * (a * (1+this%z5))**(-3*(1 + this%w5))
+          else if (z < this%z7) then
+            grho_de(i) = grho_late_today * this%fac6 * (a * (1+this%z6))**(-3*(1 + this%w6))
+          else if (z < this%z8) then
+            grho_de(i) = grho_late_today * this%fac7 * (a * (1+this%z7))**(-3*(1 + this%w7))
+          else if (z < this%z9) then
+            grho_de(i) = grho_late_today * this%fac8 * (a * (1+this%z8))**(-3*(1 + this%w8))
+          else if (z < this%z10) then
+            grho_de(i) = grho_late_today * this%fac9 * (a * (1+this%z9))**(-3*(1 + this%w9))
+          else
+            grho_de(i) = grho_late_today * this%fac10 * (a * (1+this%z10))**(-3*(1 + this%w10))
+          end if
         else
           stop "[Multifluid DE] Invalid dark energy model for fluid 1"
         end if
@@ -237,7 +289,7 @@ module MultiFluidDE
     ! TODO clean variables
     dgrhoe = 0
     dgqe = 0
-    use_ppf = (this%models(1) == 2 .or. this%models(1) == 3 .or. this%models(1)==4) ! If using a model with PPF, this is true
+    use_ppf = (this%models(1) == 2 .or. this%models(1) == 3 .or. this%models(1)==4 .or. this%models(1)==5) ! If using a model with PPF, this is true
     do i=1, this%num_of_components
       delta_index = w_ix + 2*(i - 1)
       if (i == 1 .and. use_ppf) then ! w0wa and binw requires PPF
@@ -308,7 +360,7 @@ module MultiFluidDE
     integer :: i, delta_index
     logical :: use_ppf
 
-    use_ppf = (this%models(1)==2 .or. this%models(1)==3 .or. this%models(1)==4)
+    use_ppf = (this%models(1)==2 .or. this%models(1)==3 .or. this%models(1)==4 .or. this%models(1)==5)
 
     ! Fluid equations in synchronous gauge https://arxiv.org/pdf/1806.10608.pdf
     ! Assuming cs_2 = 1 for all fluids
@@ -368,6 +420,9 @@ module MultiFluidDE
       w = this%w0
       wa = 0
     else if (this%models(1) == 4) then
+      w = this%w0
+      wa = 0
+    else if (this%models(1) == 5) then
       w = this%w0
       wa = 0
     else
@@ -466,7 +521,7 @@ module MultiFluidDE
 
     this%is_cosmological_constant = .false.
     this%num_perturb_equations = 2 * this%num_of_components
-    if (this%models(1) == 2 .or. this%models(1) == 3 .or. this%models(1) == 4) then
+    if (this%models(1) == 2 .or. this%models(1) == 3 .or. this%models(1) == 4 .or. this%models(1)==5) then
       this%num_perturb_equations = this%num_perturb_equations - 1 ! PPF only has one equation
     end if
 
@@ -484,6 +539,19 @@ module MultiFluidDE
       this%fac3 = this%fac2 * ((1+this%z3) / (1+this%z2))**(3*(1 + this%w2))
       this%fac4 = this%fac3 * ((1+this%z4) / (1+this%z3))**(3*(1 + this%w3))
       this%fac5 = this%fac4 * ((1+this%z5) / (1+this%z4))**(3*(1 + this%w4))
+    end if
+
+    if (this%models(1)==5) then ! Precalculate some lengthy factors
+      this%fac1 = (1+this%z1)**(3*(1 + this%w0))
+      this%fac2 = this%fac1 * ((1+this%z2) / (1+this%z1))**(3*(1 + this%w1))
+      this%fac3 = this%fac2 * ((1+this%z3) / (1+this%z2))**(3*(1 + this%w2))
+      this%fac4 = this%fac3 * ((1+this%z4) / (1+this%z3))**(3*(1 + this%w3))
+      this%fac5 = this%fac4 * ((1+this%z5) / (1+this%z4))**(3*(1 + this%w4))
+      this%fac6 = this%fac5 * ((1+this%z6) / (1+this%z5))**(3*(1 + this%w5))
+      this%fac7 = this%fac6 * ((1+this%z7) / (1+this%z6))**(3*(1 + this%w6))
+      this%fac8 = this%fac7 * ((1+this%z8) / (1+this%z7))**(3*(1 + this%w7))
+      this%fac9 = this%fac8 * ((1+this%z9) / (1+this%z8))**(3*(1 + this%w8))
+      this%fac10 = this%fac9 * ((1+this%z10) / (1+this%z9))**(3*(1 + this%w9))
     end if
 
     select type (State)

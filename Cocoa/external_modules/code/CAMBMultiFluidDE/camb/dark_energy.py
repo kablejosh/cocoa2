@@ -125,11 +125,21 @@ class MultiFluidDE(DarkEnergyModel):
         ("w3", c_double, "Fourth binned w"),
         ("w4", c_double, "Fourth binned w"),
         ("w5", c_double, "Fourth binned w"),
+        ("w6", c_double, "Second binned w"),
+        ("w7", c_double, "Third binned w"),
+        ("w8", c_double, "Fourth binned w"),
+        ("w9", c_double, "Fourth binned w"),
+        ("w10", c_double, "Fourth binned w"),
         ("z1", c_double, "Bin limit"),
         ("z2", c_double, "Bin limit"),
         ("z3", c_double, "Bin limit"),
         ("z4", c_double, "Bin limit"),
         ("z5", c_double, "Bin limit"),
+        ("z6", c_double, "Bin limit"),
+        ("z7", c_double, "Bin limit"),
+        ("z8", c_double, "Bin limit"),
+        ("z9", c_double, "Bin limit"),
+        ("z10", c_double, "Bin limit"),
         ("zc", c_double, "EDE critical redshift."),
         ("fde_zc", c_double, "EDE energy contribution at critical redshift."),
         ("theta_i", c_double, "Initial field value divided by the potential frequency."),
@@ -141,12 +151,18 @@ class MultiFluidDE(DarkEnergyModel):
         ("fac2", c_double, "Internal factor for binW"),
         ("fac3", c_double, "Internal factor for binW."),
         ("fac4", c_double, "Internal factor for binW"),
-        ("fac5", c_double, "Internal factor for binW")
+        ("fac5", c_double, "Internal factor for binW"),
+        ("fac6", c_double, "Internal factor for binW."),
+        ("fac7", c_double, "Internal factor for binW"),
+        ("fac8", c_double, "Internal factor for binW."),
+        ("fac9", c_double, "Internal factor for binW"),
+        ("fac10", c_double, "Internal factor for binW")
     ]
 
     def set_params(self, num_of_components, models, w0 = -1, wa = 0,
                    zc = 3000, fde_zc = 0, wn = 1, theta_i = 1,
-                   w1 = -1, w2 = -1, w3 = -1, w4 = -1, w5 = -1, z1 = 0.7, z2 = 1.4, z3 = 2.1, z4 = 2.8, z5 = 3.5):
+                   w1 = -1, w2 = -1, w3 = -1, w4 = -1, w5 = -1, w6 = -1, w7 = -1, w8 = -1, w9 = -1, w10 = -1,
+                   z1 = 0.7, z2 = 1.4, z3 = 2.1, z4 = 2.8, z5 = 3.5, z6 = 4.2, z7 = 4.9, z8 = 5.6, z9 = 6.3, z10 = 7.0):
         """
          Set dark energy fluid parameters.
         """
@@ -166,11 +182,21 @@ class MultiFluidDE(DarkEnergyModel):
         self.w3 = w3
         self.w4 = w4
         self.w5 = w5
+        self.w6 = w6
+        self.w7 = w7
+        self.w8 = w8
+        self.w9 = w9
+        self.w10 = w10
         self.z1 = z1
         self.z2 = z2
         self.z3 = z3
         self.z4 = z4
         self.z5 = z5
+        self.z6 = z6
+        self.z7 = z7
+        self.z8 = z8
+        self.z9 = z9
+        self.z10 = z10
         self.zc = zc
         self.fde_zc = fde_zc
         self.theta_i = theta_i
