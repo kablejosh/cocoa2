@@ -3424,7 +3424,7 @@
     wa_hf=0._dl
     w_lam=w_true
     wa_ppf=wa_true
-    write(*,*)'at z = ',real(redshift),' equivalent w_const =', real(w_hf)
+    ! write(*,*)'at z = ',real(redshift),' equivalent w_const =', real(w_hf)
 
     end subroutine PKequal
 
