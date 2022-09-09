@@ -2994,6 +2994,7 @@ const int init_static_vars_only)
     {
       log_fatal("use linear power spectrum option not implemented with TATT");
       exit(1);
+      return 0;
     }
     else
     {
@@ -3012,7 +3013,9 @@ const int init_static_vars_only)
   {
     log_fatal("like.IA = %d not supported", like.IA);
     exit(1);
+    return 0;
   }
+  return res;
 }
 
 double C_gs_tomo_limber(double l, int ni, int nj)
@@ -3395,6 +3398,7 @@ double C_gg_tomo_limber(double l, int ni, int nj)
       double init = C_gg_tomo_limber_nointerp(exp(lnlmin), 0, 0, use_linear_ps_limber, 1);
     }
     #pragma GCC diagnostic pop
+    
     #pragma omp parallel for collapse(2)
     for (int k=0; k<NSIZE; k++)  
     {
