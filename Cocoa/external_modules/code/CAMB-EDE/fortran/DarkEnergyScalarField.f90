@@ -669,6 +669,8 @@
         real(dl) :: log_params(2)
         real(dl) :: ac
 
+        
+
         ! 1 - log_params(*) will be the initial guess for the algorithm
         if (this%which_potential == 1) then
             ! log_params(1) = log(this%V0)]
@@ -676,6 +678,7 @@
             log_params(1) = log(this%V0)
             log_params(2) = log(this%initial_phi)
         else
+            this%f = 0.7_dl / this%theta_i ! Initial guess for f
             log_params(1) = log(this%f)
             log_params(2) = log(this%m)
         end if
