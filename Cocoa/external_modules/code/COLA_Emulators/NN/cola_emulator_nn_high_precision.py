@@ -7,7 +7,7 @@ from scipy.interpolate import interp2d
 from tensorflow import keras
 import os
 cwd = os.getcwd()
-emulator_path=cwd+'/projects/lsst_y1/Emulators/NN'
+emulator_path = cwd + '/external_modules/code/COLA_Emulators/NN/'
 
 num_of_points = 400 # How many simulations
 simulation_precision = 'high' # 'default' or 'high'
